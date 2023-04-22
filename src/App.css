@@ -1,38 +1,37 @@
-.App {
+body {
+  background-color: rgb(215, 215, 215);
+  padding: 10px;
+}
+.center-this {
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.topper {
+  padding-top: 30px;
+}
+#root {
+  padding-bottom: 50px;
+}
+body::-webkit-scrollbar {
+  width: 8px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+body::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(152, 148, 148, 0.3);
+  box-shadow: #717171;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+body::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    177deg,
+    rgb(169, 170, 171) 34%,
+    rgb(119, 120, 127) 100%
+  );
+  outline: 1px solid #a5a9a6;
 }
 
-.App-link {
-  color: #61dafb;
-}
+/* Thin Scrollbar */
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+:root {
+  scrollbar-color: rgba(45, 46, 55, 1) rgb(210, 210, 210) !important;
+  scrollbar-width: thin !important;
 }
