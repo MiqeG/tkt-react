@@ -38,6 +38,10 @@ class Table extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: "",
+      sector: "",
+      siren: "",
+      year: "",
       loading: false,
       data: [],
       sorters: {},
@@ -235,6 +239,9 @@ class Table extends Component {
       this.getData();
     });
   };
+  resetFilters = () => {
+    this.setState({ name: "", sector: "", siren: "", year: "", Limit: 500 });
+  };
   handleStrings = (e, { name, value }) => {
     this.setState({ [name]: value });
     this.setState({ ExclusiveStartKey: undefined });
@@ -242,6 +249,16 @@ class Table extends Component {
   handleNumbers = (e, { name, value }) => {
     this.setState({ [name]: parseInt(value) });
     if (name !== "Limit") this.setState({ ExclusiveStartKey: undefined });
+  };
+  getMessageSegmet = () => {
+    if (this.state.message)
+      return (
+        <Segment basic>
+          <MessageSuccessError
+            message={this.state.message}
+          ></MessageSuccessError>
+        </Segment>
+      );
   };
   render() {
     return (
@@ -252,11 +269,11 @@ class Table extends Component {
               <label>Limit</label>
               <Dropdown
                 name="Limit"
-                defaultValue={this.state.Limit.toString()}
                 fluid
                 selection
                 options={limitOptions}
                 onChange={this.handleNumbers}
+                value={this.state.Limit.toString()}
               />
             </Form.Field>
             <Form.Field>
@@ -266,6 +283,7 @@ class Table extends Component {
                 placeholder="Search name"
                 maxLength="50"
                 onChange={this.handleStrings}
+                value={this.state.name}
               ></Input>
             </Form.Field>
             <Form.Field>
@@ -275,6 +293,7 @@ class Table extends Component {
                 placeholder="Search sector"
                 maxLength="50"
                 onChange={this.handleStrings}
+                value={this.state.sector}
               ></Input>
             </Form.Field>
             <Form.Field>
@@ -285,6 +304,7 @@ class Table extends Component {
                 placeholder="Search siren"
                 maxLength="9"
                 onChange={this.handleNumbers}
+                value={this.state.siren}
               ></Input>
             </Form.Field>
             <Form.Field>
@@ -295,6 +315,7 @@ class Table extends Component {
                 placeholder="Search year"
                 min="1800"
                 onChange={this.handleNumbers}
+                value={this.state.year}
               ></Input>
             </Form.Field>
             <Form.Field>
@@ -310,17 +331,25 @@ class Table extends Component {
                 Search
               </Button>
             </Form.Field>
+            <Form.Field>
+              <Button
+                className="ui medium top-padded search"
+                basic
+                icon
+                labelPosition="left"
+                onClick={() => this.resetFilters()}
+              >
+                <Icon name="refresh" color="green" />
+                Reset Filters
+              </Button>
+            </Form.Field>
           </Form.Group>
         </Form>
         <div>
           <Dimmer active={this.state.loading} inverted>
             <Loader />
           </Dimmer>
-          <Segment basic>
-            <MessageSuccessError
-              message={this.state.message}
-            ></MessageSuccessError>
-          </Segment>
+          {this.getMessageSegmet()}
           <MyTable
             data={this.state.data}
             deleteRow={this.deleteRow}

@@ -83,6 +83,7 @@ class MyTable extends React.Component {
   render() {
     return (
       <div>
+        <div className="ui divider"></div>
         <Form>
           <Form.Group>
             <Form.Field>
