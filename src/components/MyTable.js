@@ -114,6 +114,7 @@ class MyTable extends React.Component {
           <Table.Body>
             {this.props.data.map((object, i) => (
               <ObjectRow
+                colorrow={i % 2 === 0 ? "odd colorrow" : "pair colorrow"}
                 obj={object}
                 key={i}
                 setCheckedUnchecked={this.setCheckedUnchecked}
@@ -139,7 +140,7 @@ class ObjectRow extends React.Component {
   };
   render() {
     return (
-      <Table.Row>
+      <Table.Row className={this.props.colorrow}>
         <Table.Cell>{this.props.obj.name}</Table.Cell>
         <Table.Cell>{this.props.obj.sector}</Table.Cell>
         <Table.Cell>{this.props.obj.siren}</Table.Cell>

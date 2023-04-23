@@ -28,7 +28,9 @@ body::-webkit-scrollbar-thumb {
   );
   outline: 1px solid #a5a9a6;
 }
-
+.pair.colorrow {
+  background-color: #F9FAFB;
+}
 /* Thin Scrollbar */
 .top-padded.search {
   margin-top: 25px;
