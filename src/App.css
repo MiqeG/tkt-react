@@ -33,8 +33,11 @@ body::-webkit-scrollbar-thumb {
 .top-padded.search {
   margin-top: 25px;
 }
-.pointer-class{
+.pointer-class {
   cursor: pointer;
+}
+.overflow.this {
+  overflow-y: scroll;
 }
 :root {
   scrollbar-color: rgba(45, 46, 55, 1) rgb(210, 210, 210) !important;

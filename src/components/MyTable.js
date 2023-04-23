@@ -1,5 +1,7 @@
 import React from "react";
-import { Checkbox, Table } from "semantic-ui-react";
+import { Checkbox, Table, Form } from "semantic-ui-react";
+import Modal from "./Modal";
+import ModalDelete from "./ModalDelete";
 class MyTable extends React.Component {
   state = {
     set: false,
@@ -32,10 +34,10 @@ class MyTable extends React.Component {
     const toggle = !this.state.set;
     const newMap = {};
     this.props.data.forEach((element) => {
-      newMap[element.siren + "_" + element.year] = toggle;
+      if (toggle === false) delete newMap[element.siren + "_" + element.year];
+      else newMap[element.siren + "_" + element.year] = toggle;
     });
-    this.setState({ set: toggle });
-    this.setState({ checkMap: newMap });
+    return this.setState({ set: toggle, checkMap: newMap });
   };
   getSorterIcon = (name, sorting) => {
     if (!this.props.data.length) return;
@@ -69,10 +71,35 @@ class MyTable extends React.Component {
     }
     return rows;
   };
+  emptyCheckMap = (item) => {
+    this.setState({ checkMap: {} });
+  };
+  deleteFromMap = (key) => {
+    const map = this.state.checkMap;
+    delete map[key];
+    this.setState({ checkMap: map });
+  };
   componentDidUpdate() {}
   render() {
     return (
       <div>
+        <Form>
+          <Form.Group>
+            <Form.Field>
+              <Modal buttonName="Add entreprise" />
+            </Form.Field>
+            <Form.Field>
+              <ModalDelete
+                buttonName="Delete entreprises"
+                checkMap={this.state.checkMap}
+                deleteRow={this.props.deleteRow}
+                emptyCheckMap={this.emptyCheckMap}
+                deleteFromMap={this.deleteFromMap}
+              />
+            </Form.Field>
+          </Form.Group>
+        </Form>
+        <div className="ui divider"></div>
         <Table color="green">
           <Table.Header>
             <Table.Row>

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import MyTable from "./MyTable";
-import Modal from "./Modal";
 import {
   Button,
   Icon,
@@ -46,36 +45,22 @@ class Table extends Component {
       disabled: true,
     };
   }
-  deleteRow = async (item) => {
-    let input = prompt('Type "' + item.name + item.year + '" to delete item');
-    if (input !== item.name + item.year) return;
-    try {
-      await this.deleteData(item);
-
-      this.setState({
-        message: {
-          title: "Success !",
-          text: "Entreprise " + item.name + " Deleted !",
-          positive: true,
-        },
+  deleteRow = (item) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await this.deleteData(item);
+      } catch (error) {
+        return reject(error);
+      }
+      const filteredData = this.state.data.filter(
+        (i) =>
+          i.siren.toString() + i.year.toString() !==
+          item.siren.toString() + item.year.toString()
+      );
+      this.setState({ data: filteredData }, () => {
+        return resolve();
       });
-    } catch (error) {
-      this.setState({
-        message: {
-          title: "Error !",
-          text: error.message || error.stack || error,
-          positive: true,
-        },
-      });
-      return console.error(error);
-    }
-    const filteredData = this.state.data.filter(
-      (i) =>
-        i.siren.toString() + i.year.toString() !==
-        item.siren.toString() + item.year.toString()
-    );
-    this.setState({ data: filteredData });
-    return;
+    });
   };
   addRow(row) {
     this.setState({ data: { row, ...this.state.data } });
@@ -287,9 +272,6 @@ class Table extends Component {
     return (
       <div>
         <Form className="ui mini">
-          <Form.Field>
-            <Modal buttonName="Add entreprise" />
-          </Form.Field>
           <Form.Group>
             <Form.Field>
               <label>Limit</label>
