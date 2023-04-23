@@ -30,7 +30,12 @@ body::-webkit-scrollbar-thumb {
 }
 
 /* Thin Scrollbar */
-
+.top-padded.search {
+  margin-top: 25px;
+}
+.pointer-class{
+  cursor: pointer;
+}
 :root {
   scrollbar-color: rgba(45, 46, 55, 1) rgb(210, 210, 210) !important;
   scrollbar-width: thin !important;
