@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 import DTable from "./DataTableEntreprise";
 import Modal from "./Modal";
-import { Button, Icon, Dimmer, Loader, Segment, List } from "semantic-ui-react";
+import {
+  Button,
+  Icon,
+  Dimmer,
+  Loader,
+  Segment,
+  List,
+  Form,
+} from "semantic-ui-react";
 import MessageSuccessError from "./MessageSuccessError";
 import app_env from "../AppEnv";
 class Table extends Component {
@@ -73,7 +81,6 @@ class Table extends Component {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        Limit: this.state.Limit || 10,
         ExclusiveStartKey: this.state.ExclusiveStartKey,
       }),
     };
@@ -109,28 +116,12 @@ class Table extends Component {
   render() {
     return (
       <div>
-        <List>
-          <List.Item>
-            <List.Content>
+        <Form>
+          <Form.Group>
+            <Form.Field>
               <Modal buttonName="Add entreprise" />
-            </List.Content>
-          </List.Item>
-          <List.Item>
-            <List.Content>
-              <Button
-                basic
-                icon
-                labelPosition="left"
-                disabled={!this.state.ExclusiveStartKey}
-                onClick={this.getData}
-              >
-                <Icon name="cloud download" color="green" />
-                More data
-              </Button>
-            </List.Content>
-          </List.Item>
-          <List.Item>
-            <List.Content>
+            </Form.Field>
+            <Form.Field>
               <Button
                 basic
                 icon
@@ -140,10 +131,9 @@ class Table extends Component {
                 <Icon name="refresh" color="green" />
                 Refresh
               </Button>
-            </List.Content>
-          </List.Item>
-        </List>
-
+            </Form.Field>
+          </Form.Group>
+        </Form>
         <Segment basic>
           <Dimmer active={this.state.loading} inverted>
             <Loader />
