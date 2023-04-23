@@ -15,24 +15,24 @@ import MessageSuccessError from "./MessageSuccessError";
 import app_env from "../AppEnv";
 const limitOptions = [
   {
-    key: "10",
-    text: "10",
-    value: "10",
+    key: "500",
+    text: "500",
+    value: "500",
   },
   {
-    key: "25",
-    text: "25",
-    value: "25",
+    key: "1000",
+    text: "1000",
+    value: "1000",
   },
   {
-    key: "50",
-    text: "50",
-    value: "50",
+    key: "2000",
+    text: "2000",
+    value: "2000",
   },
   {
-    key: "100",
-    text: "100",
-    value: "100",
+    key: "10000",
+    text: "10K",
+    value: "10000",
   },
 ];
 class Table extends Component {
@@ -41,17 +41,8 @@ class Table extends Component {
     this.state = {
       loading: false,
       data: [],
-      sorters: {
-        name: true,
-        sector: true,
-        siren: true,
-        year: true,
-        ca: true,
-        margin: true,
-        loss: true,
-        ebitda: true,
-      },
-      Limit: 10,
+      sorters: {},
+      Limit: 500,
       disabled: true,
     };
   }
@@ -89,13 +80,22 @@ class Table extends Component {
   addRow(row) {
     this.setState({ data: { row, ...this.state.data } });
   }
-  sortByName = (name) => {
+  sortByName = (name, noToggle) => {
     let items = [...this.state.data];
-    const sorters = this.state.sorters;
+    const sorters = {
+      [name]:
+        this.state.sorters[name] !== undefined
+          ? this.state.sorters[name]
+          : true,
+    };
+    if (!noToggle) {
+      sorters[name] = !sorters[name];
+      this.setState({ sorters: sorters });
+    }
     if (items.length) {
       if (name === "name" || name === "sector") {
         items.sort(function (a, b) {
-          if (!sorters[name]) {
+          if (sorters[name]) {
             const temp = a;
             const temp2 = b;
             a = temp2;
@@ -109,7 +109,7 @@ class Table extends Component {
         });
       } else {
         items.sort(function (a, b) {
-          if (!sorters[name]) {
+          if (sorters[name]) {
             const temp = a;
             const temp2 = b;
             a = temp2;
@@ -121,8 +121,6 @@ class Table extends Component {
         });
       }
 
-      sorters[name] = !sorters[name];
-      this.setState({ sorters: sorters });
       this.setState({ data: items });
     }
     return;
@@ -235,10 +233,28 @@ class Table extends Component {
         requestOptions
       );
       const data = await response.json();
-      this.setState({ data: [...this.state.data, ...data.Items] });
-      if (data.LastEvaluatedKey)
-        this.setState({ ExclusiveStartKey: data.LastEvaluatedKey });
-      else this.setState({ ExclusiveStartKey: undefined });
+      this.setState({ data: [...this.state.data, ...data.Items] }, () => {
+        if (Object.keys(this.state.sorters)[0])
+          this.sortByName(Object.keys(this.state.sorters)[0], true);
+      });
+      if (data.LastEvaluatedKey) {
+        this.setState({ ExclusiveStartKey: data.LastEvaluatedKey }, () => {
+          if (data.Items.length < this.state.Limit) {
+            console.log(
+              "found : " +
+                data.Items.length +
+                " OF " +
+                this.state.Limit +
+                " SCANNING NEXT CURSOR  ",
+              data.LastEvaluatedKey
+            );
+            this.getData();
+          }
+        });
+      } else {
+        console.log("END found :" + data.Items.length);
+        this.setState({ ExclusiveStartKey: undefined });
+      }
     } catch (error) {
       console.error(error);
       this.setState({
@@ -251,7 +267,9 @@ class Table extends Component {
     }
     return this.setState({ loading: false });
   };
-  componentDidMount() {}
+  componentDidMount() {
+    this.getData();
+  }
   reloadTable = async () => {
     this.setState({ data: [], ExclusiveStartKey: undefined }, () => {
       this.getData();

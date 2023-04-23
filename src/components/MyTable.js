@@ -51,7 +51,7 @@ class MyTable extends React.Component {
           className="pointer-class"
           name={name}
           onClick={() => {
-            this.props.sort(name);
+            this.props.sort(name, false);
             this.setSort(name);
           }}
         >
@@ -69,8 +69,7 @@ class MyTable extends React.Component {
     }
     return rows;
   };
-  componentDidMount() {}
-
+  componentDidUpdate() {}
   render() {
     return (
       <div>

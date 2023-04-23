@@ -23,6 +23,13 @@ export default class MenuExampleContentProp extends Component {
             onClick={this.handleItemClick}
           />
           <Menu.Item
+            icon="home"
+            name="home2"
+            active={activeItem === ""}
+            content="Home2"
+            onClick={this.handleItemClick}
+          />
+          <Menu.Item
             icon="users"
             name="blogs"
             active={activeItem === "blogs"}
