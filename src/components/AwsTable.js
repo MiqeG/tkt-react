@@ -129,75 +129,50 @@ class Table extends Component {
       }
     });
   }
+  getObj(obj, name, value) {
+    obj.FilterExpression = obj.FilterExpression
+      ? obj.FilterExpression + ` AND #${name} = :${name}`
+      : `#${name} = :${name}`;
+    const newObj = {
+      ["#" + name]: name,
+    };
+    obj.ExpressionAttributeNames = obj.ExpressionAttributeNames
+      ? { ...newObj, ...obj.ExpressionAttributeNames }
+      : newObj;
+    const newObjA = {
+      [":" + name]: value,
+    };
+    obj.ExpressionAttributeValues = obj.ExpressionAttributeValues
+      ? { ...newObjA, ...obj.ExpressionAttributeValues }
+      : newObjA;
+    return obj;
+  }
   getFilters = () => {
-    const obj = {};
+    let obj = {};
+
     if (this.state.name) {
-      obj.FilterExpression = obj.FilterExpression
-        ? obj.FilterExpression + " AND #n = :n"
-        : "#n = :n";
-      const newObj = {
-        "#n": "name",
-      };
-      obj.ExpressionAttributeNames = obj.ExpressionAttributeNames
-        ? { ...newObj, ...obj.ExpressionAttributeNames }
-        : newObj;
-      const newObjA = {
-        ":n": this.state.name,
-      };
-      obj.ExpressionAttributeValues = obj.ExpressionAttributeValues
-        ? { ...newObjA, ...obj.ExpressionAttributeValues }
-        : newObjA;
+      obj = this.getObj(obj, "name", this.state.name);
     }
     if (this.state.sector) {
-      obj.FilterExpression = obj.FilterExpression
-        ? obj.FilterExpression + " AND #s = :s"
-        : "#s = :s";
-      const newObj = {
-        "#s": "sector",
-      };
-      obj.ExpressionAttributeNames = obj.ExpressionAttributeNames
-        ? { ...newObj, ...obj.ExpressionAttributeNames }
-        : newObj;
-      const newObjA = {
-        ":s": this.state.sector,
-      };
-      obj.ExpressionAttributeValues = obj.ExpressionAttributeValues
-        ? { ...newObjA, ...obj.ExpressionAttributeValues }
-        : newObjA;
+      obj = this.getObj(obj, "sector", this.state.sector);
     }
     if (this.state.siren) {
-      obj.FilterExpression = obj.FilterExpression
-        ? obj.FilterExpression + " AND #si = :si"
-        : "#si = :si";
-      const newObj = {
-        "#si": "siren",
-      };
-      obj.ExpressionAttributeNames = obj.ExpressionAttributeNames
-        ? { ...newObj, ...obj.ExpressionAttributeNames }
-        : newObj;
-      const newObjA = {
-        ":si": this.state.siren,
-      };
-      obj.ExpressionAttributeValues = obj.ExpressionAttributeValues
-        ? { ...newObjA, ...obj.ExpressionAttributeValues }
-        : newObjA;
+      obj = this.getObj(obj, "siren", parseInt(this.state.siren));
     }
     if (this.state.year) {
-      obj.FilterExpression = obj.FilterExpression
-        ? obj.FilterExpression + " AND #y = :y"
-        : "#y = :y";
-      const newObj = {
-        "#y": "year",
-      };
-      obj.ExpressionAttributeNames = obj.ExpressionAttributeNames
-        ? { ...newObj, ...obj.ExpressionAttributeNames }
-        : newObj;
-      const newObjA = {
-        ":y": this.state.year,
-      };
-      obj.ExpressionAttributeValues = obj.ExpressionAttributeValues
-        ? { ...newObjA, ...obj.ExpressionAttributeValues }
-        : newObjA;
+      obj = this.getObj(obj, "year", parseInt(this.state.year));
+    }
+    if (this.state.ca) {
+      obj = this.getObj(obj, "ca", parseInt(this.state.ca));
+    }
+    if (this.state.margin) {
+      obj = this.getObj(obj, "margin", parseInt(this.state.margin));
+    }
+    if (this.state.loss) {
+      obj = this.getObj(obj, "loss", parseInt(this.state.loss));
+    }
+    if (this.state.ebitda) {
+      obj = this.getObj(obj, "ebitda", parseInt(this.state.ebitda));
     }
     return obj;
   };
