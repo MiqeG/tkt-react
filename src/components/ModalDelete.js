@@ -43,7 +43,7 @@ export default class ModalDelete extends React.Component {
           }
         );
       });
-      await this.waitTime(50);
+      //await this.waitTime(50);
     }
     this.setState({ deletePhase: "done" });
   };
