@@ -97,6 +97,7 @@ class MyTable extends React.Component {
                 deleteRow={this.props.deleteRow}
                 emptyCheckMap={this.emptyCheckMap}
                 deleteFromMap={this.deleteFromMap}
+                reloadTable={this.props.reloadTable}
               />
             </Form.Field>
             <Form.Field>

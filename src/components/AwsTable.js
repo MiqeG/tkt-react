@@ -53,17 +53,10 @@ class Table extends Component {
     return new Promise(async (resolve, reject) => {
       try {
         await this.deleteData(item);
+        return resolve();
       } catch (error) {
         return reject(error);
       }
-      const filteredData = this.state.data.filter(
-        (i) =>
-          i.siren.toString() + i.year.toString() !==
-          item.siren.toString() + item.year.toString()
-      );
-      this.setState({ data: filteredData }, () => {
-        return resolve();
-      });
     });
   };
   addRow = (row) => {
@@ -75,9 +68,7 @@ class Table extends Component {
       };
       try {
         await fetch(app_env.url.API_URL + "/put_entreprise", requestOptions);
-        this.setState({ data: [row, ...this.state.data] }, () => {
-          return resolve();
-        });
+        return resolve();
       } catch (error) {
         return reject(error);
       }

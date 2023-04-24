@@ -13,6 +13,7 @@ export default class ModalDelete extends React.Component {
   };
   deleteAll = async () => {
     const length = Object.keys(this.props.checkMap).length;
+    await this.resetProgress();
     this.setState({ deletePhase: "pending" });
     for (const key in this.props.checkMap) {
       this.setState({ deletItem: key });
@@ -48,7 +49,11 @@ export default class ModalDelete extends React.Component {
     this.setState({ deletePhase: "done" });
   };
   resetProgress = () => {
-    this.setState({ percent: 0 });
+    return new Promise((resolve, reject) => {
+      this.setState({ percent: 0, done: 0, errors: 0, success: 0 }, () => {
+        return resolve();
+      });
+    });
   };
   closeModal = () => {
     this.setState({
@@ -60,6 +65,7 @@ export default class ModalDelete extends React.Component {
       deletePhase: "start",
       deleteAbort: false,
     });
+    this.props.reloadTable();
   };
   waitTime = (time) => {
     return new Promise((resolve, reject) => {

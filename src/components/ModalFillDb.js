@@ -38,6 +38,7 @@ export default class MofalOfFill extends React.Component {
     return items;
   };
   fillAll = async () => {
+    await this.resetProgress();
     const items = this.state.items;
     const length = items.length || 0;
     this.setState({ fillPhase: "pending" });
@@ -78,7 +79,11 @@ export default class MofalOfFill extends React.Component {
     this.setState({ fillPhase: "done" });
   };
   resetProgress = () => {
-    this.setState({ percent: 0 });
+    return new Promise((resolve, reject) => {
+      this.setState({ percent: 0, done: 0, errors: 0, success: 0 }, () => {
+        return resolve();
+      });
+    });
   };
   closeModal = () => {
     this.setState({
