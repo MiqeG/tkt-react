@@ -29,9 +29,9 @@ const limitOptions = [
     value: "2000",
   },
   {
-    key: "10000",
-    text: "10K",
-    value: "10000",
+    key: "9999",
+    text: "9999",
+    value: "9999",
   },
 ];
 class Table extends Component {
@@ -66,9 +66,23 @@ class Table extends Component {
       });
     });
   };
-  addRow(row) {
-    this.setState({ data: { row, ...this.state.data } });
-  }
+  addRow = (row) => {
+    return new Promise(async (resolve, reject) => {
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(row),
+      };
+      try {
+        await fetch(app_env.url.API_URL + "/put_entreprise", requestOptions);
+        this.setState({ data: [row, ...this.state.data] }, () => {
+          return resolve();
+        });
+      } catch (error) {
+        return reject(error);
+      }
+    });
+  };
   sortByName = (name, noToggle) => {
     let items = [...this.state.data];
     const sorters = {
@@ -204,14 +218,6 @@ class Table extends Component {
       if (data.LastEvaluatedKey) {
         this.setState({ ExclusiveStartKey: data.LastEvaluatedKey }, () => {
           if (data.Items.length < this.state.Limit) {
-            console.log(
-              "found : " +
-                data.Items.length +
-                " OF " +
-                this.state.Limit +
-                " SCANNING NEXT CURSOR  ",
-              data.LastEvaluatedKey
-            );
             this.getData();
           }
         });
@@ -238,6 +244,10 @@ class Table extends Component {
     this.setState({ data: [], ExclusiveStartKey: undefined }, () => {
       this.getData();
     });
+  };
+  resetItems = () => {
+    this.setState({ data: [], ExclusiveStartKey: undefined });
+    return;
   };
   resetFilters = () => {
     this.setState({ name: "", sector: "", siren: "", year: "", Limit: 500 });
@@ -353,7 +363,10 @@ class Table extends Component {
           <MyTable
             data={this.state.data}
             deleteRow={this.deleteRow}
+            addRow={this.addRow}
             sort={this.sortByName}
+            resetItems={this.resetItems}
+            reloadTable={this.reloadTable}
           />
           <Segment basic className="center-this">
             <Button

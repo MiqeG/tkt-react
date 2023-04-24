@@ -2,6 +2,7 @@ import React from "react";
 import { Checkbox, Table, Form } from "semantic-ui-react";
 import Modal from "./Modal";
 import ModalDelete from "./ModalDelete";
+import ModalFill from "./ModalFillDb";
 class MyTable extends React.Component {
   state = {
     set: false,
@@ -96,6 +97,14 @@ class MyTable extends React.Component {
                 deleteRow={this.props.deleteRow}
                 emptyCheckMap={this.emptyCheckMap}
                 deleteFromMap={this.deleteFromMap}
+              />
+            </Form.Field>
+            <Form.Field>
+              <ModalFill
+                buttonName="Fill Db"
+                addRow={this.props.addRow}
+                reset={this.props.resetItems}
+                reloadTable={this.props.reloadTable}
               />
             </Form.Field>
           </Form.Group>
