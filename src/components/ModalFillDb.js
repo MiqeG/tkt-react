@@ -39,6 +39,7 @@ export default class MofalOfFill extends React.Component {
   };
   fillAll = async () => {
     await this.resetProgress();
+    this.props.resetCheckMap();
     const items = this.state.items;
     const length = items.length || 0;
     this.setState({ fillPhase: "pending" });
@@ -76,6 +77,7 @@ export default class MofalOfFill extends React.Component {
       });
       //await this.waitTime(50);
     }
+
     this.setState({ fillPhase: "done" });
   };
   resetProgress = () => {

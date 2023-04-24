@@ -80,6 +80,9 @@ class MyTable extends React.Component {
     delete map[key];
     this.setState({ checkMap: map });
   };
+  resetCheckMap = () => {
+    this.setState({ checkMap: {} });
+  };
   componentDidUpdate() {}
   render() {
     return (
@@ -106,6 +109,7 @@ class MyTable extends React.Component {
                 addRow={this.props.addRow}
                 reset={this.props.resetItems}
                 reloadTable={this.props.reloadTable}
+                resetCheckMap={this.resetCheckMap}
               />
             </Form.Field>
           </Form.Group>
