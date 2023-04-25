@@ -48,15 +48,15 @@ export default class MofalOfFill extends React.Component {
     this.props.reset();
     for (const key in items) {
       const batch = items[key];
-      this.setState({ fillItem: "Deleting batch " + key });
+      this.setState({ fillItem: "Filling batch " + key });
       if (this.state.fillAbort) break;
       try {
         await this.props.batchWrite(batch, "put");
         console.log("Sending batch ");
-        this.setState({ success: this.state.success + this.state.batchSize });
+        this.setState({ success: this.state.success + 1 });
       } catch (error) {
         console.error("ERROR Filling batch ", error);
-        this.setState({ errors: this.state.errors + this.state.batchSize });
+        this.setState({ errors: this.state.errors + 1 });
       }
       await new Promise((resolve, reject) => {
         const inc = this.state.done + 1;

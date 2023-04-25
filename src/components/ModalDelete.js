@@ -34,10 +34,10 @@ export default class ModalDelete extends React.Component {
       try {
         await this.props.batchWrite(batch, "delete");
         console.log("Deleting batch " + index);
-        this.setState({ success: this.state.success + this.state.batchSize });
+        this.setState({ success: this.state.success + 1 });
       } catch (error) {
         console.error("ERROR Deleting batch " + index, error);
-        this.setState({ errors: this.state.errors + this.state.batchSize });
+        this.setState({ errors: this.state.errors + 1 });
       }
       await new Promise((resolve, reject) => {
         const inc = this.state.done + 1;
