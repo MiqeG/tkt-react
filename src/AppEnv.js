@@ -1,6 +1,6 @@
 const prod = {
   url: {
-    API_URL: "https://i2q4vjnnzg.execute-api.eu-west-1.amazonaws.com/production",
+    API_URL: "https://7sa1dk63o2.execute-api.eu-west-1.amazonaws.com/production/",
   },
 };
 const dev = {
