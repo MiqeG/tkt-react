@@ -72,6 +72,7 @@ export default class ModalDelete extends React.Component {
       deletePhase: "start",
       deleteAbort: false,
     });
+    this.props.resetCheckMap();
     this.props.reloadTable();
   };
   waitTime = (time) => {
@@ -91,7 +92,7 @@ export default class ModalDelete extends React.Component {
           basic
           icon
           labelPosition="left"
-          disabled={this.state.percent === 100 ? true : false}
+          disabled={!Object.keys(this.props.checkMap).length}
           onClick={() => this.deleteAll()}
         >
           <i className="times icon red"></i> Delete

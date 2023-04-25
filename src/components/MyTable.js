@@ -123,6 +123,7 @@ class MyTable extends React.Component {
                 deleteFromMap={this.deleteFromMap}
                 batchWrite={this.props.batchWrite}
                 reloadTable={this.props.reloadTable}
+                resetCheckMap={this.resetCheckMap}
               />
             </Form.Field>
             <Form.Field>
