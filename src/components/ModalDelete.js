@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Icon, Modal, Progress } from "semantic-ui-react";
 import MessageSuccessError from "./MessageSuccessError";
+import { makeBatches } from "./make_batches/make_batches";
 export default class ModalDelete extends React.Component {
   state = {
     open: false,
@@ -10,42 +11,48 @@ export default class ModalDelete extends React.Component {
     success: 0,
     deletePhase: "start",
     deleteAbort: false,
+    batchSize: 25,
   };
+  toArray(checkMap) {
+    const arr = [];
+    for (const key in checkMap) {
+      const elem = key.split("_");
+      arr.push({ siren: parseInt(elem[0]), year: parseInt(elem[1]) });
+    }
+    return arr;
+  }
   deleteAll = async () => {
-    const length = Object.keys(this.props.checkMap).length;
     await this.resetProgress();
     this.setState({ deletePhase: "pending" });
-    for (const key in this.props.checkMap) {
-      this.setState({ deletItem: key });
-      if (this.state.deleteAbort) break;
-      const elem = key.split("_");
-
+    const items = makeBatches(
+      this.toArray(this.props.checkMap),
+      this.state.batchSize
+    );
+    for (let index = 0; index < items.length; index++) {
+      this.setState({ deletItem: "Deleting batch " + index });
+      const batch = items[index];
       try {
-        await this.props.deleteRow({
-          year: parseInt(elem[1]),
-          siren: parseInt(elem[0]),
-        });
-        console.log("Item deleted " + key);
-        this.setState({ success: this.state.success + 1 });
-        this.props.deleteFromMap(key);
+        await this.props.batchWrite(batch, "delete");
+        console.log("Deleting batch " + index);
+        this.setState({ success: this.state.success + this.state.batchSize });
       } catch (error) {
-        console.error("ERROR Deleting item ", error);
-        this.setState({ errors: this.state.errors + 1 });
+        console.error("ERROR Deleting batch " + index, error);
+        this.setState({ errors: this.state.errors + this.state.batchSize });
       }
       await new Promise((resolve, reject) => {
         const inc = this.state.done + 1;
         this.setState(
           {
             done: inc,
-            percent: Math.round((inc / length) * 100),
+            percent: Math.round((inc / items.length || 0) * 100),
           },
           () => {
             return resolve();
           }
         );
       });
-      //await this.waitTime(50);
     }
+
     this.setState({ deletePhase: "done" });
   };
   resetProgress = () => {
@@ -136,10 +143,7 @@ export default class ModalDelete extends React.Component {
     } else if (this.state.deletePhase === "pending") {
       return (
         <div>
-          <label>
-            Deleting Siren : {this.state.deletItem.split("_")[0]} Year:{" "}
-            {this.state.deletItem.split("_")[1]}{" "}
-          </label>
+          <label>{this.state.deletItem}</label>
           <Progress percent={this.state.percent} progress />
         </div>
       );

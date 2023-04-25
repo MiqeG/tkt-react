@@ -3,11 +3,13 @@ import { Checkbox, Table, Form } from "semantic-ui-react";
 import Modal from "./Modal";
 import ModalDelete from "./ModalDelete";
 import ModalFill from "./ModalFillDb";
+import UpdateModal from "./UpdateModal";
 class MyTable extends React.Component {
   state = {
     set: false,
     checkMap: {},
     sort: {},
+    rowClick: {},
     headerCells: [
       { name: "name", Text: "Name" },
       { name: "sector", Text: "Sector" },
@@ -83,12 +85,31 @@ class MyTable extends React.Component {
   resetCheckMap = () => {
     this.setState({ checkMap: {} });
   };
+  handleRowClick = (row) => {
+    console.log(row);
+    this.setState({ rowClick: row });
+  };
+  handleUpdateModalClose = () => {
+    this.setState({ rowClick: {} });
+  };
+  rclick = () => {
+    if (this.state.rowClick.siren) {
+      return (
+        <UpdateModal
+          buttonName="test"
+          item={this.state.rowClick}
+          close={this.handleUpdateModalClose}
+        ></UpdateModal>
+      );
+    }
+  };
   componentDidUpdate() {}
   render() {
     return (
       <div>
         <div className="ui divider"></div>
         <Form>
+          {this.rclick()}
           <Form.Group>
             <Form.Field>
               <Modal buttonName="Add entreprise" />
@@ -100,6 +121,7 @@ class MyTable extends React.Component {
                 deleteRow={this.props.deleteRow}
                 emptyCheckMap={this.emptyCheckMap}
                 deleteFromMap={this.deleteFromMap}
+                batchWrite={this.props.batchWrite}
                 reloadTable={this.props.reloadTable}
               />
             </Form.Field>
@@ -107,6 +129,7 @@ class MyTable extends React.Component {
               <ModalFill
                 buttonName="Fill Db"
                 addRow={this.props.addRow}
+                batchWrite={this.props.batchWrite}
                 reset={this.props.resetItems}
                 reloadTable={this.props.reloadTable}
                 resetCheckMap={this.resetCheckMap}
@@ -129,7 +152,12 @@ class MyTable extends React.Component {
           <Table.Body>
             {this.props.data.map((object, i) => (
               <ObjectRow
-                colorrow={i % 2 === 0 ? "odd colorrow" : "pair colorrow"}
+                handleRowClick={this.handleRowClick}
+                colorrow={
+                  i % 2 === 0
+                    ? "odd colorrow pointer-class select-raised"
+                    : "pair colorrow pointer-class select-raised"
+                }
                 obj={object}
                 key={i}
                 setCheckedUnchecked={this.setCheckedUnchecked}
@@ -156,14 +184,62 @@ class ObjectRow extends React.Component {
   render() {
     return (
       <Table.Row className={this.props.colorrow}>
-        <Table.Cell>{this.props.obj.name}</Table.Cell>
-        <Table.Cell>{this.props.obj.sector}</Table.Cell>
-        <Table.Cell>{this.props.obj.siren}</Table.Cell>
-        <Table.Cell>{this.props.obj.year}</Table.Cell>
-        <Table.Cell>{this.props.obj.ca}</Table.Cell>
-        <Table.Cell>{this.props.obj.margin}</Table.Cell>
-        <Table.Cell>{this.props.obj.loss}</Table.Cell>
-        <Table.Cell>{this.props.obj.ebitda}</Table.Cell>
+        <Table.Cell
+          onClick={() => {
+            this.props.handleRowClick(this.props.obj);
+          }}
+        >
+          {this.props.obj.name}
+        </Table.Cell>
+        <Table.Cell
+          onClick={() => {
+            this.props.handleRowClick(this.props.obj);
+          }}
+        >
+          {this.props.obj.sector}
+        </Table.Cell>
+        <Table.Cell
+          onClick={() => {
+            this.props.handleRowClick(this.props.obj);
+          }}
+        >
+          {this.props.obj.siren}
+        </Table.Cell>
+        <Table.Cell
+          onClick={() => {
+            this.props.handleRowClick(this.props.obj);
+          }}
+        >
+          {this.props.obj.year}
+        </Table.Cell>
+        <Table.Cell
+          onClick={() => {
+            this.props.handleRowClick(this.props.obj);
+          }}
+        >
+          {this.props.obj.ca}
+        </Table.Cell>
+        <Table.Cell
+          onClick={() => {
+            this.props.handleRowClick(this.props.obj);
+          }}
+        >
+          {this.props.obj.margin}
+        </Table.Cell>
+        <Table.Cell
+          onClick={() => {
+            this.props.handleRowClick(this.props.obj);
+          }}
+        >
+          {this.props.obj.loss}
+        </Table.Cell>
+        <Table.Cell
+          onClick={() => {
+            this.props.handleRowClick(this.props.obj);
+          }}
+        >
+          {this.props.obj.ebitda}
+        </Table.Cell>
         <Table.Cell>
           <Checkbox
             data-year={this.props.obj.year}

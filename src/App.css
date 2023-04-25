@@ -29,7 +29,7 @@ body::-webkit-scrollbar-thumb {
   outline: 1px solid #a5a9a6;
 }
 .pair.colorrow {
-  background-color: #F9FAFB;
+  background-color: #f9fafb;
 }
 /* Thin Scrollbar */
 .top-padded.search {
@@ -44,4 +44,8 @@ body::-webkit-scrollbar-thumb {
 :root {
   scrollbar-color: rgba(45, 46, 55, 1) rgb(210, 210, 210) !important;
   scrollbar-width: thin !important;
+}
+tr.select-raised:hover {
+  background-color: #6bcf82;
+  color: white;
 }

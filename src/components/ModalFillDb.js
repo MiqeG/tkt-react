@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Icon, Modal, Progress } from "semantic-ui-react";
 import MessageSuccessError from "./MessageSuccessError";
 import * as TableData from "./table_data/table_data";
-
+import { makeBatches } from "./make_batches/make_batches";
 export default class MofalOfFill extends React.Component {
   state = {
     open: false,
@@ -13,6 +13,7 @@ export default class MofalOfFill extends React.Component {
     fillPhase: "start",
     fillAbort: false,
     items: {},
+    batchSize: 25,
   };
   parseTableDataItem = (item, elem) => {
     const Item = {
@@ -37,31 +38,25 @@ export default class MofalOfFill extends React.Component {
     });
     return items;
   };
+
   fillAll = async () => {
     await this.resetProgress();
     this.props.resetCheckMap();
-    const items = this.state.items;
+    const items = makeBatches(this.state.items, this.state.batchSize);
     const length = items.length || 0;
     this.setState({ fillPhase: "pending" });
     this.props.reset();
     for (const key in items) {
-      const elem = items[key];
-      this.setState({ fillItem: elem });
+      const batch = items[key];
+      this.setState({ fillItem: "Deleting batch " + key });
       if (this.state.fillAbort) break;
       try {
-        await this.props.addRow(elem);
-        console.log(
-          "Item filled " +
-            elem.name +
-            " year " +
-            elem.year +
-            " siren " +
-            elem.siren
-        );
-        this.setState({ success: this.state.success + 1 });
+        await this.props.batchWrite(batch, "put");
+        console.log("Sending batch ");
+        this.setState({ success: this.state.success + this.state.batchSize });
       } catch (error) {
-        console.error("ERROR Filling item ", error);
-        this.setState({ errors: this.state.errors + 1 });
+        console.error("ERROR Filling batch ", error);
+        this.setState({ errors: this.state.errors + this.state.batchSize });
       }
       await new Promise((resolve, reject) => {
         const inc = this.state.done + 1;
@@ -75,9 +70,7 @@ export default class MofalOfFill extends React.Component {
           }
         );
       });
-      //await this.waitTime(50);
     }
-
     this.setState({ fillPhase: "done" });
   };
   resetProgress = () => {
@@ -119,7 +112,7 @@ export default class MofalOfFill extends React.Component {
           disabled={this.state.percent === 100 ? true : false}
           onClick={() => this.fillAll()}
         >
-          <i className="times icon red"></i> Fill
+          <i className="building icon green"></i> Fill
         </Button>
       );
     else if (type === "close")
@@ -168,10 +161,7 @@ export default class MofalOfFill extends React.Component {
     } else if (this.state.fillPhase === "pending") {
       return (
         <div>
-          <label>
-            Filling Siren : {this.state.fillItem.siren} Year:
-            {this.state.fillItem.year}
-          </label>
+          <label>{this.state.fillItem}</label>
           <Progress percent={this.state.percent} progress />
         </div>
       );
@@ -209,7 +199,7 @@ export default class MofalOfFill extends React.Component {
             labelPosition="left"
             basic
           >
-            <Icon name="times" color="green" />
+            <Icon name=" building" color="green" />
             {this.props.buttonName}
           </Button>
         }

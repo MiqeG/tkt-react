@@ -74,6 +74,25 @@ class Table extends Component {
       }
     });
   };
+  batchWrite = (items, type) => {
+    const body = {
+      [type]: true,
+      Items: items,
+    };
+    return new Promise(async (resolve, reject) => {
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      };
+      try {
+        await fetch(app_env.url.API_URL + "/batch_write", requestOptions);
+        return resolve();
+      } catch (error) {
+        return reject(error);
+      }
+    });
+  };
   sortByName = (name, noToggle) => {
     let items = [...this.state.data];
     const sorters = {
@@ -264,7 +283,7 @@ class Table extends Component {
   render() {
     return (
       <div>
-        <Form className="ui mini">
+        <Form className="ui mini" onSubmit={() => this.reloadTable}>
           <Form.Group>
             <Form.Field>
               <label>Limit</label>
@@ -303,7 +322,10 @@ class Table extends Component {
                 type="number"
                 name="siren"
                 placeholder="Search siren"
+                minLength="9"
                 maxLength="9"
+                min="100000000"
+                max="999999999"
                 onChange={this.handleNumbers}
                 value={this.state.siren}
               ></Input>
@@ -315,6 +337,9 @@ class Table extends Component {
                 name="year"
                 placeholder="Search year"
                 min="1800"
+                max="2145"
+                minLength="4"
+                maxLength="4"
                 onChange={this.handleNumbers}
                 value={this.state.year}
               ></Input>
@@ -325,7 +350,6 @@ class Table extends Component {
                 basic
                 icon
                 labelPosition="left"
-                onClick={this.reloadTable}
                 type="submit"
               >
                 <Icon name="search" color="green" />
@@ -355,6 +379,7 @@ class Table extends Component {
             data={this.state.data}
             deleteRow={this.deleteRow}
             addRow={this.addRow}
+            batchWrite={this.batchWrite}
             sort={this.sortByName}
             resetItems={this.resetItems}
             reloadTable={this.reloadTable}
