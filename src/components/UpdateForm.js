@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, Loader, Dimmer } from "semantic-ui-react";
+import { Form, Loader, Dimmer } from "semantic-ui-react";
 import MessageSuccessError from "./MessageSuccessError";
 import app_env from "../AppEnv";
 import SectorDropDown from "./SectorDropDown";
@@ -48,6 +48,7 @@ export default class UpdateForm extends React.Component {
   };
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
   handleSubmit = () => {
+    if (this.loading) return;
     const item = {
       name: this.state.name,
       sector: this.state.sector,
@@ -253,20 +254,6 @@ export default class UpdateForm extends React.Component {
               onChange={this.handleChange}
             />
           </Form.Field>
-
-          <Button
-            basic
-            icon
-            labelPosition="left"
-            onClick={() => this.handleSubmit()}
-          >
-            <i className="cloud upload green icon"></i>
-            Update
-          </Button>
-          <Button basic icon labelPosition="left" onClick={() => this.delete()}>
-            <i className="times red icon"></i>
-            Delete
-          </Button>
         </Form>
       );
     }

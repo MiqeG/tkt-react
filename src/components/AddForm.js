@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, Loader, Dimmer } from "semantic-ui-react";
+import { Form, Loader, Dimmer } from "semantic-ui-react";
 import MessageSuccessError from "./MessageSuccessError";
 import app_env from "../AppEnv";
 import SectorDropDown from "./SectorDropDown";
@@ -15,16 +15,21 @@ const model = {
 };
 const nameRegex = /.*[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF0-9-_]$/g;
 export default class AddForm extends React.Component {
-  state = {
-    message: undefined,
-    loading: false,
-    ...model,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      message: undefined,
+      loading: false,
+      ...model,
+    };
+  }
+
   handleSectorDropDownChange = (value) => {
     this.setState({ sector: value });
   };
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
   handleSubmit = () => {
+    if (this.loading) return;
     const item = {
       name: this.state.name,
       sector: this.state.sector,
@@ -130,6 +135,7 @@ export default class AddForm extends React.Component {
     }
     return this.setState({ loading: false });
   };
+
   render() {
     return (
       <div>
@@ -226,10 +232,6 @@ export default class AddForm extends React.Component {
               message={this.state.message}
             ></MessageSuccessError>
           </Form.Field>
-          <Button basic icon labelPosition="left" type="submit">
-            <i className="cloud upload green icon"></i>
-            Submit
-          </Button>
         </Form>
       </div>
     );

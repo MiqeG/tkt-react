@@ -2,26 +2,34 @@ import React, { Component } from "react";
 import { Dropdown } from "semantic-ui-react";
 import * as TableData from "./table_data/table_data";
 
+const storage_name = "sector-dropdown";
 class SectorDropDown extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    options: [],
+    sectors: [],
+  };
+  componentDidMount = () => {
+    this.initialize();
+  };
+  initialize = () => {
+    const storage = localStorage.getItem(storage_name);
+    if (storage) return this.setState({ options: JSON.parse(storage) });
     const options = [];
     const sectors = {};
     TableData.array.forEach((item) => {
-      sectors[item.sector] = true;
-    });
-    for (const key in sectors) {
-      if (sectors[key]) {
+      if (!sectors[item.sector]) {
+        sectors[item.sector] = true;
         options.push({
-          key: key,
-          text: key,
-          value: key,
+          key: item.sector,
+          text: item.sector,
+          value: item.sector,
         });
       }
-    }
-    this.state = { options };
-  }
-
+    });
+    this.setState({ options: options, sectors: sectors }, () => {
+      return localStorage.setItem(storage_name, JSON.stringify(options));
+    });
+  };
   handleAddition = (e, { value }) => {
     this.setState((prevState) => ({
       options: [{ text: value, value }, ...prevState.options],
