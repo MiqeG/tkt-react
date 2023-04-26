@@ -3,7 +3,37 @@ import { Button, Modal } from "semantic-ui-react";
 import UpdateForm from "./UpdateForm";
 function ModalExampleModal(props) {
   const [open, setOpen] = React.useState(true);
+  const [deletedEntreprise, setDeletedEntreprise] = React.useState(false);
   const childRef = useRef();
+  const deleted = () => {
+    setDeletedEntreprise(true);
+  };
+  const conditionalButtons = () => {
+    if (!deletedEntreprise) {
+      return (
+        <span>
+          <Button
+            basic
+            icon
+            labelPosition="left"
+            onClick={() => childRef.current.handleSubmit()}
+          >
+            <i className="cloud upload green icon"></i>
+            Update
+          </Button>
+          <Button
+            basic
+            icon
+            labelPosition="left"
+            onClick={() => childRef.current.delete()}
+          >
+            <i className="times red icon"></i>
+            Delete
+          </Button>
+        </span>
+      );
+    }
+  };
   return (
     <Modal
       onClose={() => setOpen(false)}
@@ -20,28 +50,12 @@ function ModalExampleModal(props) {
             updateItemInTable={props.updateItemInTable}
             deleteRow={props.deleteRow}
             ref={childRef}
+            deleted={deleted}
           ></UpdateForm>
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
-        <Button
-          basic
-          icon
-          labelPosition="left"
-          onClick={() => childRef.current.handleSubmit()}
-        >
-          <i className="cloud upload green icon"></i>
-          Update
-        </Button>
-        <Button
-          basic
-          icon
-          labelPosition="left"
-          onClick={() => childRef.current.delete()}
-        >
-          <i className="times red icon"></i>
-          Delete
-        </Button>
+        {conditionalButtons()}
         <Button
           basic
           icon

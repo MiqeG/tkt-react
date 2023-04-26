@@ -92,7 +92,8 @@ export default class MofalOfFill extends React.Component {
       fillPhase: "start",
       fillAbort: false,
     });
-    this.props.reloadTable();
+    if (this.state.fillPhase === "done" || this.state.fillAbort)
+      this.props.reloadTable();
   };
   waitTime = (time) => {
     return new Promise((resolve, reject) => {

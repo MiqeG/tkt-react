@@ -24,6 +24,7 @@ export default class UpdateForm extends React.Component {
         siren: this.state.siren,
       });
       return this.setState({ deleted: true }, () => {
+        if (this.props.deleted) this.props.deleted();
         return this.setState({
           message: {
             title: "Success !",
