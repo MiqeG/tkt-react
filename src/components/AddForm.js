@@ -182,6 +182,7 @@ export default class AddForm extends React.Component {
               placeholder="Siren"
               name="siren"
               onChange={this.handleChange}
+              value={this.state.siren}
             />
           </Form.Field>
           <Form.Field>
@@ -193,6 +194,7 @@ export default class AddForm extends React.Component {
               placeholder="Ca"
               name="ca"
               onChange={this.handleChange}
+              value={this.state.ca}
             />
           </Form.Field>
           <Form.Field>
@@ -203,6 +205,7 @@ export default class AddForm extends React.Component {
               placeholder="Margin"
               name="margin"
               onChange={this.handleChange}
+              value={this.state.margin}
             />
           </Form.Field>
           <Form.Field>
@@ -214,6 +217,7 @@ export default class AddForm extends React.Component {
               placeholder="Ebitda"
               name="ebitda"
               onChange={this.handleChange}
+              value={this.state.ebitda}
             />
           </Form.Field>
           <Form.Field>
@@ -225,6 +229,7 @@ export default class AddForm extends React.Component {
               placeholder="Loss"
               name="loss"
               onChange={this.handleChange}
+              value={this.state.loss}
             />
           </Form.Field>
           <Form.Field>

@@ -12,23 +12,25 @@ class SectorDropDown extends Component {
     this.initialize();
   };
   initialize = () => {
-    const storage = localStorage.getItem(storage_name);
-    if (storage) return this.setState({ options: JSON.parse(storage) });
-    const options = [];
+    const options = [
+      {
+        key: "Other",
+        text: "Other",
+        value: "Other",
+      },
+    ];
     const sectors = {};
     TableData.array.forEach((item) => {
       if (!sectors[item.sector]) {
         sectors[item.sector] = true;
-        options.push({
+        options.unshift({
           key: item.sector,
           text: item.sector,
           value: item.sector,
         });
       }
     });
-    this.setState({ options: options, sectors: sectors }, () => {
-      return localStorage.setItem(storage_name, JSON.stringify(options));
-    });
+    this.setState({ options: options, sectors: sectors });
   };
   handleAddition = (e, { value }) => {
     this.setState((prevState) => ({
@@ -44,10 +46,9 @@ class SectorDropDown extends Component {
     return (
       <Dropdown
         options={this.state.options}
-        placeholder="Choose Sector"
+        placeholder="Sector"
         search
         selection
-        allowAdditions
         value={this.props.value}
         onAddItem={this.handleAddition}
         onChange={this.handleChange}

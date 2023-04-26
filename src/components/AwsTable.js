@@ -328,7 +328,7 @@ class Table extends Component {
               <label>Name</label>
               <Input
                 name="name"
-                placeholder="Search name"
+                placeholder="Name"
                 maxLength="50"
                 onChange={this.handleStrings}
                 value={this.state.name}
@@ -347,7 +347,7 @@ class Table extends Component {
               <Input
                 type="number"
                 name="siren"
-                placeholder="Search siren"
+                placeholder="Siren"
                 minLength="9"
                 maxLength="9"
                 min="100000000"
@@ -361,7 +361,7 @@ class Table extends Component {
               <Input
                 type="number"
                 name="year"
-                placeholder="Search year"
+                placeholder="Year"
                 min="1800"
                 max="2145"
                 minLength="4"

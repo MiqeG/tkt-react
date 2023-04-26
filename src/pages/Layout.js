@@ -6,9 +6,9 @@ import loader from "../audio.svg";
 const Layout = () => {
   const [isLoading, setIsLoading] = React.useState(true);
   useEffect(() => {
-    window.addEventListener("load", handleLoading);
-    return () => window.removeEventListener("load", handleLoading);
+    window.addEventListener("load", handleLoading());
   }, []);
+
   const handleLoading = () => {
     setTimeout(() => {
       setIsLoading(false);

@@ -41,7 +41,7 @@ function ModalExampleModal(props) {
       open={open}
     >
       <Modal.Header>
-        <i className="cloud upload green icon"></i> Update Entreprise
+        <i className="cloud upload green icon"></i> Edit Entreprise
       </Modal.Header>
       <Modal.Content image>
         <Modal.Description>
