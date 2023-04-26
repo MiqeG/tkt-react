@@ -1,4 +1,4 @@
-import Table from "../components/Table";
+import AwsTable from "../components/AwsTable";
 import { Divider, Segment } from "semantic-ui-react";
 const Home = () => {
   return (
@@ -7,7 +7,7 @@ const Home = () => {
         <i className="home icon green"></i>Home
       </h1>
       <Divider></Divider>
-      <Table></Table>
+      <AwsTable></AwsTable>
     </Segment>
   );
 };

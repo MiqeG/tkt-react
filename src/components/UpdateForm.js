@@ -135,7 +135,14 @@ export default class UpdateForm extends React.Component {
       body: JSON.stringify(data),
     };
     try {
-      await fetch(app_env.url.API_URL + "/upd_entreprise", requestOptions);
+      const response = await fetch(
+        app_env.url.API_URL + "/upd_entreprise",
+        requestOptions
+      );
+      if (response.status > 301 || response.status < 200)
+        throw new Error(
+          "Unable to update entreprise status : " + response.status
+        );
       this.setState({
         message: {
           title: "Success !",

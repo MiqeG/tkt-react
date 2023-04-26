@@ -130,7 +130,6 @@ class MyTable extends React.Component {
             <Form.Field>
               <ModalFill
                 buttonName="Fill Db"
-                addRow={this.props.addRow}
                 batchWrite={this.props.batchWrite}
                 reset={this.props.resetItems}
                 reloadTable={this.props.reloadTable}

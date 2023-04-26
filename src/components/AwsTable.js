@@ -66,21 +66,7 @@ class Table extends Component {
       }
     });
   };
-  addRow = (row) => {
-    return new Promise(async (resolve, reject) => {
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(row),
-      };
-      try {
-        await fetch(app_env.url.API_URL + "/put_entreprise", requestOptions);
-        return resolve();
-      } catch (error) {
-        return reject(error);
-      }
-    });
-  };
+
   updateItemInTable = (item) => {
     const index = this.state.data.findIndex((element) => {
       if (element.siren === item.siren && element.year === item.year) {
@@ -110,7 +96,14 @@ class Table extends Component {
         body: JSON.stringify(body),
       };
       try {
-        await fetch(app_env.url.API_URL + "/batch_write", requestOptions);
+        const response = await fetch(
+          app_env.url.API_URL + "/batch_write",
+          requestOptions
+        );
+        if (response.status > 301 || response.status < 200)
+          throw new Error(
+            "Unable to batch Write data status : " + response.status
+          );
         return resolve();
       } catch (error) {
         return reject(error);
@@ -170,12 +163,15 @@ class Table extends Component {
         body: JSON.stringify(item),
       };
       try {
-        return resolve(
-          await fetch(
-            app_env.url.API_URL + "/delete_entreprise",
-            requestOptions
-          )
+        const response = await fetch(
+          app_env.url.API_URL + "/delete_entreprise",
+          requestOptions
         );
+        if (response.status > 301 || response.status < 200)
+          throw new Error(
+            "Unable to delete entreprise status : " + response.status
+          );
+        return resolve();
       } catch (error) {
         console.error(error);
         return reject(error);
@@ -183,9 +179,16 @@ class Table extends Component {
     });
   }
   getObj(obj, name, value) {
-    obj.FilterExpression = obj.FilterExpression
-      ? obj.FilterExpression + ` AND contains(#${name} , :${name})`
-      : `contains(#${name} , :${name})`;
+    const parsed = parseInt(value);
+    if (!parsed) {
+      obj.FilterExpression = obj.FilterExpression
+        ? obj.FilterExpression + ` AND contains(#${name} , :${name})`
+        : `contains(#${name} , :${name})`;
+    } else {
+      obj.FilterExpression = obj.FilterExpression
+        ? obj.FilterExpression + ` AND #${name} = :${name}`
+        : `#${name} = :${name} `;
+    }
     const newObj = {
       ["#" + name]: name,
     };
@@ -193,7 +196,7 @@ class Table extends Component {
       ? { ...newObj, ...obj.ExpressionAttributeNames }
       : newObj;
     const newObjA = {
-      [":" + name]: value,
+      [":" + name]: parsed || value,
     };
     obj.ExpressionAttributeValues = obj.ExpressionAttributeValues
       ? { ...newObjA, ...obj.ExpressionAttributeValues }
@@ -210,22 +213,22 @@ class Table extends Component {
       obj = this.getObj(obj, "sector", this.state.sector);
     }
     if (this.state.siren) {
-      obj = this.getObj(obj, "siren", parseInt(this.state.siren));
+      obj = this.getObj(obj, "siren", this.state.siren);
     }
     if (this.state.year) {
-      obj = this.getObj(obj, "year", parseInt(this.state.year));
+      obj = this.getObj(obj, "year", this.state.year);
     }
     if (this.state.ca) {
-      obj = this.getObj(obj, "ca", parseInt(this.state.ca));
+      obj = this.getObj(obj, "ca", this.state.ca);
     }
     if (this.state.margin) {
-      obj = this.getObj(obj, "margin", parseInt(this.state.margin));
+      obj = this.getObj(obj, "margin", this.state.margin);
     }
     if (this.state.loss) {
-      obj = this.getObj(obj, "loss", parseInt(this.state.loss));
+      obj = this.getObj(obj, "loss", this.state.loss);
     }
     if (this.state.ebitda) {
-      obj = this.getObj(obj, "ebitda", parseInt(this.state.ebitda));
+      obj = this.getObj(obj, "ebitda", this.state.ebitda);
     }
     return obj;
   };
@@ -246,6 +249,9 @@ class Table extends Component {
         requestOptions
       );
       const data = await response.json();
+      if (response.status > 301 || response.status < 200)
+        throw new Error("Unable to get data status :" + response.status);
+
       this.setState({ data: [...this.state.data, ...data.Items] }, () => {
         if (Object.keys(this.state.sorters)[0])
           this.sortByName(Object.keys(this.state.sorters)[0], true);
@@ -275,6 +281,30 @@ class Table extends Component {
   componentDidMount() {
     this.getData();
   }
+  search = () => {
+    if (this.state.siren && this.state.siren.toString().length !== 9)
+      return this.setState({
+        message: {
+          title: "Error !",
+          text: "Siren must be 9 in length",
+          negative: true,
+        },
+      });
+    if (this.state.year && this.state.year.toString().length !== 4)
+      return this.setState({
+        message: {
+          title: "Error !",
+          text: "Year must be 4 in length",
+          negative: true,
+        },
+      });
+    else {
+      this.setState({
+        message: undefined,
+      });
+      this.reloadTable();
+    }
+  };
   reloadTable = async () => {
     this.setState({ data: [], ExclusiveStartKey: undefined }, () => {
       this.getData();
@@ -348,10 +378,6 @@ class Table extends Component {
                 type="number"
                 name="siren"
                 placeholder="Siren"
-                minLength="9"
-                maxLength="9"
-                min="100000000"
-                max="999999999"
                 onChange={this.handleNumbers}
                 value={this.state.siren}
               ></Input>
@@ -362,10 +388,6 @@ class Table extends Component {
                 type="number"
                 name="year"
                 placeholder="Year"
-                min="1800"
-                max="2145"
-                minLength="4"
-                maxLength="4"
                 onChange={this.handleNumbers}
                 value={this.state.year}
               ></Input>
@@ -376,7 +398,7 @@ class Table extends Component {
                 basic
                 icon
                 labelPosition="left"
-                onClick={() => this.reloadTable()}
+                onClick={() => this.search()}
               >
                 <Icon name="search" color="green" />
                 Search
@@ -404,7 +426,6 @@ class Table extends Component {
           <MyTable
             data={this.state.data}
             deleteRow={this.deleteRow}
-            addRow={this.addRow}
             batchWrite={this.batchWrite}
             sort={this.sortByName}
             resetItems={this.resetItems}

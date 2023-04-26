@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import Home from "./pages/Home";
-import Home2 from "./pages/Home2";
 import Layout from "./pages/Layout";
 import Contact from "./pages/Contact";
 import Blogs from "./pages/TheBlogs.js";
@@ -20,7 +19,6 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="blogs" element={<Blogs />} />
-          <Route path="home2" element={<Home2 />} />
           <Route path="contact" element={<Contact />} />
         </Route>
       </Routes>
