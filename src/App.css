@@ -19,10 +19,13 @@ body::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(152, 148, 148, 0.3);
   box-shadow: #717171;
 }
-.marginer {
+.actions {
+  margin-bottom: 0px;
+}
+.marginer.mini {
   margin-top: 10px;
 }
-.loader_image{
+.loader_image {
   text-align: center;
   height: 50%;
   width: 75%;

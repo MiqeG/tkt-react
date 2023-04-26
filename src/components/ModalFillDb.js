@@ -146,7 +146,7 @@ export default class MofalOfFill extends React.Component {
   getFillButtons() {
     if (this.state.fillPhase === "start") {
       return (
-        <div>
+        <div className="actions">
           {this.getButton("fill")}
           {this.getButton("close")}
         </div>
@@ -195,7 +195,7 @@ export default class MofalOfFill extends React.Component {
         onOpen={() => this.setState({ open: true })}
         open={this.state.open}
         trigger={
-          <Button className="mini" icon labelPosition="left" basic>
+          <Button className="mini marginer" icon labelPosition="left" basic>
             <Icon name="building" color="green" />
             {this.props.buttonName}
           </Button>

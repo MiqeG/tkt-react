@@ -128,7 +128,7 @@ export default class ModalDelete extends React.Component {
   getDeleteButtons() {
     if (this.state.deletePhase === "start") {
       return (
-        <div>
+        <div className="actions">
           {this.getButton("delete")}
           {this.getButton("close")}
         </div>
@@ -174,7 +174,7 @@ export default class ModalDelete extends React.Component {
         open={this.state.open}
         trigger={
           <Button
-            className="mini"
+            className="mini marginer"
             disabled={Object.keys(this.props.checkMap).length ? false : true}
             icon
             labelPosition="left"

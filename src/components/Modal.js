@@ -11,7 +11,7 @@ function ModalExampleModal(props) {
       onOpen={() => setOpen(true)}
       open={open}
       trigger={
-        <Button className="mini" icon labelPosition="left" basic>
+        <Button className="mini marginer" icon labelPosition="left" basic>
           <Icon name="cloud upload" color="green" />
           {props.buttonName}
         </Button>

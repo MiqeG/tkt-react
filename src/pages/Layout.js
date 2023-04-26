@@ -21,7 +21,7 @@ const Layout = () => {
     </>
   ) : (
     <div className="loader_image ui container">
-      {<img class="loader_image" src={loader} alt="loader" />}
+      {<img className="loader_image" src={loader} alt="loader" />}
     </div>
   );
 };
