@@ -1,5 +1,5 @@
 body {
-  background-color: rgb(215, 215, 215);
+  background-color: rgb(252, 252, 252);
   padding: 10px;
 }
 .center-this {
@@ -21,6 +21,11 @@ body::-webkit-scrollbar-track {
 }
 .marginer {
   margin-top: 10px;
+}
+.loader_image{
+  text-align: center;
+  height: 100%;
+  width: 100%;
 }
 body::-webkit-scrollbar-thumb {
   background: linear-gradient(
