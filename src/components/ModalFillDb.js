@@ -12,7 +12,7 @@ export default class MofalOfFill extends React.Component {
     success: 0,
     fillPhase: "start",
     fillAbort: false,
-    items: {},
+    items: [],
     batchSize: 25,
   };
   parseTableDataItem = (item, elem) => {
@@ -40,6 +40,8 @@ export default class MofalOfFill extends React.Component {
   };
 
   fillAll = async () => {
+    if (!this.state.items.length)
+      this.setState({ items: this.parseTableData() });
     await this.resetProgress();
     this.props.resetCheckMap();
     const items = makeBatches(this.state.items, this.state.batchSize);
@@ -192,14 +194,8 @@ export default class MofalOfFill extends React.Component {
         onOpen={() => this.setState({ open: true })}
         open={this.state.open}
         trigger={
-          <Button
-            className="mini"
-            disabled={this.state.items.length ? false : true}
-            icon
-            labelPosition="left"
-            basic
-          >
-            <Icon name=" building" color="green" />
+          <Button className="mini" icon labelPosition="left" basic>
+            <Icon name="building" color="green" />
             {this.props.buttonName}
           </Button>
         }

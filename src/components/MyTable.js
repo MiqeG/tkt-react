@@ -86,7 +86,6 @@ class MyTable extends React.Component {
     this.setState({ checkMap: {} });
   };
   handleRowClick = (row) => {
-    console.log(row);
     this.setState({ rowClick: row });
   };
   handleUpdateModalClose = () => {
@@ -99,6 +98,8 @@ class MyTable extends React.Component {
           buttonName="test"
           item={this.state.rowClick}
           close={this.handleUpdateModalClose}
+          updateItemInTable={this.props.updateItemInTable}
+          deleteRow={this.props.deleteRow}
         ></UpdateModal>
       );
     }

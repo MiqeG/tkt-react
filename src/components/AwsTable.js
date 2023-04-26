@@ -53,7 +53,12 @@ class Table extends Component {
     return new Promise(async (resolve, reject) => {
       try {
         await this.deleteData(item);
-        return resolve();
+        const newData = this.state.data.filter((i) => {
+          return i.year + i.siren !== item.year + item.siren;
+        });
+        this.setState({ data: newData }, () => {
+          return resolve();
+        });
       } catch (error) {
         return reject(error);
       }
@@ -73,6 +78,23 @@ class Table extends Component {
         return reject(error);
       }
     });
+  };
+  updateItemInTable = (item) => {
+    const index = this.state.data.findIndex((element) => {
+      if (element.siren === item.siren && element.year === item.year) {
+        return true;
+      }
+      return false;
+    });
+    if (index !== -1) {
+      const newArr = this.state.data;
+      newArr[index] = item;
+      return this.setState({ data: newArr });
+    } else {
+      const error = "Element not found in table";
+      console.error(error);
+      return alert(error);
+    }
   };
   batchWrite = (items, type) => {
     const body = {
@@ -153,14 +175,15 @@ class Table extends Component {
           )
         );
       } catch (error) {
+        console.error(error);
         return reject(error);
       }
     });
   }
   getObj(obj, name, value) {
     obj.FilterExpression = obj.FilterExpression
-      ? obj.FilterExpression + ` AND #${name} = :${name}`
-      : `#${name} = :${name}`;
+      ? obj.FilterExpression + ` AND contains(#${name} , :${name})`
+      : `contains(#${name} , :${name})`;
     const newObj = {
       ["#" + name]: name,
     };
@@ -267,7 +290,7 @@ class Table extends Component {
     this.setState({ ExclusiveStartKey: undefined });
   };
   handleNumbers = (e, { name, value }) => {
-    this.setState({ [name]: parseInt(value) });
+    this.setState({ [name]: parseInt(value) || "" });
     if (name !== "Limit") this.setState({ ExclusiveStartKey: undefined });
   };
   getMessageSegmet = () => {
@@ -283,7 +306,7 @@ class Table extends Component {
   render() {
     return (
       <div>
-        <Form className="ui mini" onSubmit={() => this.reloadTable}>
+        <Form className="ui mini">
           <Form.Group>
             <Form.Field>
               <label>Limit</label>
@@ -350,7 +373,7 @@ class Table extends Component {
                 basic
                 icon
                 labelPosition="left"
-                type="submit"
+                onClick={() => this.reloadTable()}
               >
                 <Icon name="search" color="green" />
                 Search
@@ -383,6 +406,7 @@ class Table extends Component {
             sort={this.sortByName}
             resetItems={this.resetItems}
             reloadTable={this.reloadTable}
+            updateItemInTable={this.updateItemInTable}
           />
           <Segment basic className="center-this">
             <Button

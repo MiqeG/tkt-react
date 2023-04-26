@@ -63,17 +63,19 @@ export default class ModalDelete extends React.Component {
     });
   };
   closeModal = () => {
-    this.setState({
-      open: false,
-      percent: 0,
-      errors: 0,
-      success: 0,
-      deletItem: undefined,
-      deletePhase: "start",
-      deleteAbort: false,
-    });
-    this.props.resetCheckMap();
-    this.props.reloadTable();
+    if (this.state.deletePhase === "done" || this.state.deleteAbort) {
+      this.setState({
+        open: false,
+        percent: 0,
+        errors: 0,
+        success: 0,
+        deletItem: undefined,
+        deletePhase: "start",
+        deleteAbort: false,
+      });
+      this.props.resetCheckMap();
+      this.props.reloadTable();
+    } else this.setState({ open: false });
   };
   waitTime = (time) => {
     return new Promise((resolve, reject) => {

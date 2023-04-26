@@ -15,7 +15,11 @@ function ModalExampleModal(props) {
       </Modal.Header>
       <Modal.Content image>
         <Modal.Description>
-          <UpdateForm item={props.item}></UpdateForm>
+          <UpdateForm
+            item={props.item}
+            updateItemInTable={props.updateItemInTable}
+            deleteRow={props.deleteRow}
+          ></UpdateForm>
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>

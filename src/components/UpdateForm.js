@@ -10,10 +10,39 @@ export default class UpdateForm extends React.Component {
     this.state = {
       message: undefined,
       loading: false,
+      deleted: false,
       ...props.item,
     };
   }
-
+  delete = async () => {
+    const check = this.state.siren + "_" + this.state.year;
+    const input = prompt("Type " + check + " to delete item");
+    if (input !== check) return;
+    try {
+      await this.props.deleteRow({
+        year: this.state.year,
+        siren: this.state.siren,
+      });
+      return this.setState({ deleted: true }, () => {
+        return this.setState({
+          message: {
+            title: "Success !",
+            text: "Item deleted",
+            positive: true,
+          },
+        });
+      });
+    } catch (error) {
+      console.error(error);
+      return this.setState({
+        message: {
+          title: "Error !",
+          text: error.message || error.code || error.stack || error,
+          negative: true,
+        },
+      });
+    }
+  };
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
   handleSubmit = () => {
     const item = {
@@ -105,10 +134,12 @@ export default class UpdateForm extends React.Component {
       this.setState({
         message: {
           title: "Success !",
-          text: "Entreprise Added",
+          text: "Entreprise Updated",
           positive: true,
         },
       });
+      this.props.updateItemInTable(data);
+      return this.setState({ loading: false });
     } catch (error) {
       console.error(error);
       this.setState({
@@ -121,10 +152,10 @@ export default class UpdateForm extends React.Component {
     }
     return this.setState({ loading: false });
   };
-  render() {
-    return (
-      <div>
-        <Form onSubmit={this.handleSubmit}>
+  conditionalForm = () => {
+    if (!this.state.deleted) {
+      return (
+        <Form>
           <Dimmer active={this.state.loading} inverted>
             <Loader />
           </Dimmer>
@@ -222,15 +253,34 @@ export default class UpdateForm extends React.Component {
               onChange={this.handleChange}
             />
           </Form.Field>
+
+          <Button
+            basic
+            icon
+            labelPosition="left"
+            onClick={() => this.handleSubmit()}
+          >
+            <i className="cloud upload green icon"></i>
+            Update
+          </Button>
+          <Button basic icon labelPosition="left" onClick={() => this.delete()}>
+            <i className="times red icon"></i>
+            Delete
+          </Button>
+        </Form>
+      );
+    }
+  };
+  render() {
+    return (
+      <div>
+        {this.conditionalForm()}
+        <Form className="marginer">
           <Form.Field>
             <MessageSuccessError
               message={this.state.message}
             ></MessageSuccessError>
           </Form.Field>
-          <Button basic icon labelPosition="left" type="submit">
-            <i className="cloud upload green icon"></i>
-            Submit
-          </Button>
         </Form>
       </div>
     );

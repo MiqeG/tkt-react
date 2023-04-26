@@ -1,14 +1,7 @@
 import React, { Component } from "react";
 import DTable from "./DataTableEntreprise";
 import Modal from "./Modal";
-import {
-  Button,
-  Icon,
-  Dimmer,
-  Loader,
-  Segment,
-  Form,
-} from "semantic-ui-react";
+import { Button, Icon, Dimmer, Loader, Segment, Form } from "semantic-ui-react";
 import MessageSuccessError from "./MessageSuccessError";
 import app_env from "../AppEnv";
 class Table extends Component {
