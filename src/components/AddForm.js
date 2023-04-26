@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Form, Loader, Dimmer } from "semantic-ui-react";
 import MessageSuccessError from "./MessageSuccessError";
 import app_env from "../AppEnv";
-
+import SectorDropDown from "./SectorDropDown";
 const model = {
   name: "",
   sector: "",
@@ -20,7 +20,9 @@ export default class AddForm extends React.Component {
     loading: false,
     ...model,
   };
-
+  handleSectorDropDownChange = (value) => {
+    this.setState({ sector: value });
+  };
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
   handleSubmit = () => {
     const item = {
@@ -147,13 +149,10 @@ export default class AddForm extends React.Component {
           </Form.Field>
           <Form.Field>
             <label>Sector</label>
-            <Form.Input
-              required
-              placeholder="Sector"
-              name="sector"
+            <SectorDropDown
               value={this.state.sector}
-              onChange={this.handleChange}
-            />
+              handleChange={this.handleSectorDropDownChange}
+            ></SectorDropDown>
           </Form.Field>
           <Form.Field>
             <label>Year</label>

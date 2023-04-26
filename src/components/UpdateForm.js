@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Form, Loader, Dimmer } from "semantic-ui-react";
 import MessageSuccessError from "./MessageSuccessError";
 import app_env from "../AppEnv";
-
+import SectorDropDown from "./SectorDropDown";
 const nameRegex = /.*[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF0-9-_]$/g;
 export default class UpdateForm extends React.Component {
   constructor(props) {
@@ -42,6 +42,9 @@ export default class UpdateForm extends React.Component {
         },
       });
     }
+  };
+  handleSectorDropDownChange = (value) => {
+    this.setState({ sector: value });
   };
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
   handleSubmit = () => {
@@ -197,13 +200,10 @@ export default class UpdateForm extends React.Component {
           </Form.Field>
           <Form.Field>
             <label>Sector</label>
-            <Form.Input
-              required
-              placeholder="Sector"
-              name="sector"
+            <SectorDropDown
               value={this.state.sector}
-              onChange={this.handleChange}
-            />
+              handleChange={this.handleSectorDropDownChange}
+            ></SectorDropDown>
           </Form.Field>
 
           <Form.Field>

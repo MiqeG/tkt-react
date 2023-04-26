@@ -12,6 +12,8 @@ import {
 } from "semantic-ui-react";
 import MessageSuccessError from "./MessageSuccessError";
 import app_env from "../AppEnv";
+import SectorDropDown from "./SectorDropDown";
+
 const limitOptions = [
   {
     key: "500",
@@ -293,6 +295,9 @@ class Table extends Component {
     this.setState({ [name]: parseInt(value) || "" });
     if (name !== "Limit") this.setState({ ExclusiveStartKey: undefined });
   };
+  handleSectorDropDownChange = (value) => {
+    this.setState({ sector: value });
+  };
   getMessageSegmet = () => {
     if (this.state.message)
       return (
@@ -331,13 +336,11 @@ class Table extends Component {
             </Form.Field>
             <Form.Field>
               <label>Sector</label>
-              <Input
-                name="sector"
-                placeholder="Search sector"
-                maxLength="50"
-                onChange={this.handleStrings}
+
+              <SectorDropDown
+                handleChange={this.handleSectorDropDownChange}
                 value={this.state.sector}
-              ></Input>
+              ></SectorDropDown>
             </Form.Field>
             <Form.Field>
               <label>Siren</label>
