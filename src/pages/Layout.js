@@ -10,7 +10,9 @@ const Layout = () => {
     return () => window.removeEventListener("load", handleLoading);
   }, []);
   const handleLoading = () => {
-    setIsLoading(false);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 100);
   };
   return !isLoading ? (
     <>
@@ -18,7 +20,7 @@ const Layout = () => {
       <Outlet />
     </>
   ) : (
-    <div className="loader_image">
+    <div className="loader_image ui container">
       {<img class="loader_image" src={loader} alt="loader" />}
     </div>
   );
