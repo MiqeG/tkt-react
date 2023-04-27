@@ -9,6 +9,7 @@ import {
   Form,
   Dropdown,
   Input,
+  Label,
 } from "semantic-ui-react";
 import MessageSuccessError from "./MessageSuccessError";
 import app_env from "../AppEnv";
@@ -278,10 +279,21 @@ class Table extends Component {
     }
     return this.setState({ loading: false });
   };
-  componentDidMount() {
-    this.getData();
-  }
+  componentDidMount() {}
   search = () => {
+    if (
+      !this.state.siren &&
+      !this.state.year &&
+      !this.state.name &&
+      !this.state.sector
+    )
+      return this.setState({
+        message: {
+          title: "Error !",
+          text: "A filter must be present",
+          negative: true,
+        },
+      });
     if (this.state.siren && this.state.siren.toString().length !== 9)
       return this.setState({
         message: {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Checkbox, Table, Form } from "semantic-ui-react";
+import { Checkbox, Table, Form, Label } from "semantic-ui-react";
 import Modal from "./Modal";
 import ModalDelete from "./ModalDelete";
 import ModalFill from "./ModalFillDb";
@@ -91,7 +91,7 @@ class MyTable extends React.Component {
   handleUpdateModalClose = () => {
     this.setState({ rowClick: {} });
   };
-  rclick = () => {
+  rowClick = () => {
     if (this.state.rowClick.siren) {
       return (
         <UpdateModal
@@ -110,7 +110,7 @@ class MyTable extends React.Component {
       <div>
         <div className="ui divider"></div>
         <Form>
-          {this.rclick()}
+          {this.rowClick()}
           <Form.Group>
             <Form.Field>
               <Modal buttonName="Add entreprise" />
@@ -139,6 +139,9 @@ class MyTable extends React.Component {
           </Form.Group>
         </Form>
         <div className="ui divider"></div>
+        <Label color="green" ribbon>
+          Results : {this.props.data.length}
+        </Label>
         <Table color="green">
           <Table.Header>
             <Table.Row>

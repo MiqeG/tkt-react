@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Loader, Dimmer, Button, Modal } from "semantic-ui-react";
+import { Form, Loader, Dimmer, Button, Modal, Icon } from "semantic-ui-react";
 import MessageSuccessError from "./MessageSuccessError";
 import app_env from "../AppEnv";
 import SectorDropDown from "./SectorDropDown";
@@ -332,14 +332,17 @@ export default class UpdateForm extends React.Component {
               onClick={() => this.confirmedDelete()}
             />
             <Button
+              className="ui medium top-padded search"
               basic
+              icon
               labelPosition="left"
-              icon="times"
-              content="Close"
               onClick={() =>
                 this.setState({ openConfirmation: false, value: "" })
               }
-            />
+            >
+              <Icon name="times" color="red" />
+              Close
+            </Button>
           </Modal.Actions>
         </Modal>
         <Form className="marginer">
