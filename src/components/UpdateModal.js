@@ -8,29 +8,35 @@ function ModalExampleModal(props) {
   const deleted = () => {
     setDeletedEntreprise(true);
   };
-  const conditionalButtons = () => {
+  const conditionalSubmit = () => {
     if (!deletedEntreprise) {
       return (
-        <span>
-          <Button
-            basic
-            icon
-            labelPosition="left"
-            onClick={() => childRef.current.handleSubmit()}
-          >
-            <i className="cloud upload green icon"></i>
-            Update
-          </Button>
-          <Button
-            basic
-            icon
-            labelPosition="left"
-            onClick={() => childRef.current.delete()}
-          >
-            <i className="times red icon"></i>
-            Delete
-          </Button>
-        </span>
+        <Button
+          basic
+          icon
+          labelPosition="left"
+          onClick={() => childRef.current.handleSubmit()}
+        >
+          <i className="cloud upload green icon"></i>
+          Update
+        </Button>
+      );
+    }
+  };
+  const conditionalDelete = () => {
+    if (!deletedEntreprise) {
+      return (
+        <Button
+          basic
+          icon
+          labelPosition="left"
+          onClick={() => {
+            childRef.current.delete()
+          }}
+        >
+          <i className="times red icon"></i>
+          Delete
+        </Button>
       );
     }
   };
@@ -55,7 +61,8 @@ function ModalExampleModal(props) {
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
-        {conditionalButtons()}
+        {conditionalSubmit()}
+        {conditionalDelete()}
         <Button
           basic
           icon

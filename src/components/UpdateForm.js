@@ -1,38 +1,57 @@
 import React from "react";
-import { Form, Loader, Dimmer } from "semantic-ui-react";
+import { Form, Loader, Dimmer, Button, Modal } from "semantic-ui-react";
 import MessageSuccessError from "./MessageSuccessError";
 import app_env from "../AppEnv";
 import SectorDropDown from "./SectorDropDown";
+
 const nameRegex = /.*[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF0-9-_]$/g;
 export default class UpdateForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: undefined,
+      message: null,
       loading: false,
       deleted: false,
+      confirmed: false,
       ...props.item,
+      openConfirmation: false,
+      confirmationSubtitle: "",
+      check: "remove",
+      value: "",
     };
   }
-  delete = async () => {
-    const check = this.state.siren + "_" + this.state.year;
-    const input = prompt("Type " + check + " to delete item");
-    if (input !== check) return;
+  delete = () => {
+    this.setState({
+      openConfirmation: true,
+      confirmationSubtitle:
+        "Type 'remove' to delete  : " +
+        this.state.name +
+        " of year " +
+        this.state.year,
+    });
+  };
+
+  confirmedDelete = async () => {
+    this.setState({ openConfirmation: false, value: "", loading: true });
     try {
       await this.props.deleteRow({
         year: this.state.year,
         siren: this.state.siren,
       });
-      return this.setState({ deleted: true }, () => {
-        if (this.props.deleted) this.props.deleted();
-        return this.setState({
+      return this.setState(
+        {
+          loading: false,
+          deleted: true,
           message: {
             title: "Success !",
             text: "Item deleted",
             positive: true,
           },
-        });
-      });
+        },
+        () => {
+          if (this.props.deleted) this.props.deleted();
+        }
+      );
     } catch (error) {
       console.error(error);
       return this.setState({
@@ -46,6 +65,22 @@ export default class UpdateForm extends React.Component {
   };
   handleSectorDropDownChange = (value) => {
     this.setState({ sector: value });
+  };
+  checkInput = (value) => {
+    if (value === this.state.check) {
+      this.setState({
+        confirmed: true,
+        value: value,
+      });
+    } else this.setState({ value: value, confirmed: false });
+  };
+  handleConfirmationInputChange = (e, { value }) => {
+    this.checkInput(value);
+  };
+  handleConfirmationInputKeyUp = (e) => {
+    if (e.keyCode === 8) {
+      this.checkInput(e.target.value);
+    }
   };
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
   handleSubmit = () => {
@@ -164,6 +199,7 @@ export default class UpdateForm extends React.Component {
     }
     return this.setState({ loading: false });
   };
+
   conditionalForm = () => {
     if (!this.state.deleted) {
       return (
@@ -270,6 +306,42 @@ export default class UpdateForm extends React.Component {
     return (
       <div>
         {this.conditionalForm()}
+        <Modal
+          onClose={() => this.setState({ openConfirmation: false })}
+          open={this.state.openConfirmation}
+          size="small"
+        >
+          <Modal.Header>Are you sure ?</Modal.Header>
+          <Modal.Content>
+            <p>{this.state.confirmationSubtitle}</p>
+            <Form>
+              <Form.Input
+                onChange={this.handleConfirmationInputChange}
+                onKeyUp={this.handleConfirmationInputKeyUp}
+              ></Form.Input>
+            </Form>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button
+              labelPosition="left"
+              basic
+              icon="thumbs up"
+              color="green"
+              content="Done"
+              disabled={!this.state.confirmed}
+              onClick={() => this.confirmedDelete()}
+            />
+            <Button
+              basic
+              labelPosition="left"
+              icon="times"
+              content="Close"
+              onClick={() =>
+                this.setState({ openConfirmation: false, value: "" })
+              }
+            />
+          </Modal.Actions>
+        </Modal>
         <Form className="marginer">
           <Form.Field>
             <MessageSuccessError
