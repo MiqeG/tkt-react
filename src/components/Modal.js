@@ -12,13 +12,13 @@ function ModalExampleModal(props) {
       open={open}
       trigger={
         <Button className="mini marginer" icon labelPosition="left" basic>
-          <Icon name="cloud upload" color="green" />
+          <Icon name="cloud upload" color="teal" />
           {props.buttonName}
         </Button>
       }
     >
       <Modal.Header>
-        <i className="cloud upload green icon"></i> Add Entreprise
+        <i className="cloud upload teal icon"></i> Add Entreprise
       </Modal.Header>
       <Modal.Content image>
         <Modal.Description>
@@ -32,7 +32,7 @@ function ModalExampleModal(props) {
           labelPosition="left"
           onClick={() => childRef.current.handleSubmit()}
         >
-          <i className="cloud upload green icon"></i>
+          <i className="cloud upload teal icon"></i>
           Submit
         </Button>
         <Button basic icon labelPosition="left" onClick={() => setOpen(false)}>

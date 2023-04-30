@@ -139,10 +139,10 @@ class MyTable extends React.Component {
           </Form.Group>
         </Form>
         <div className="ui divider"></div>
-        <Label color="green" ribbon>
+        <Label color="teal" ribbon>
           Results : {this.props.data.length}
         </Label>
-        <Table color="green">
+        <Table color="teal">
           <Table.Header>
             <Table.Row>
               {this.getHeaderRow()}

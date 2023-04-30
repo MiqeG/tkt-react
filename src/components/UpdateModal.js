@@ -17,7 +17,7 @@ function ModalExampleModal(props) {
           labelPosition="left"
           onClick={() => childRef.current.handleSubmit()}
         >
-          <i className="cloud upload green icon"></i>
+          <i className="cloud upload teal icon"></i>
           Update
         </Button>
       );
@@ -31,7 +31,7 @@ function ModalExampleModal(props) {
           icon
           labelPosition="left"
           onClick={() => {
-            childRef.current.delete()
+            childRef.current.delete();
           }}
         >
           <i className="times red icon"></i>
@@ -47,7 +47,7 @@ function ModalExampleModal(props) {
       open={open}
     >
       <Modal.Header>
-        <i className="cloud upload green icon"></i> Edit Entreprise
+        <i className="cloud upload teal icon"></i> Edit Entreprise
       </Modal.Header>
       <Modal.Content image>
         <Modal.Description>

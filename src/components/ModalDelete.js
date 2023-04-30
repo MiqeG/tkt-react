@@ -180,13 +180,13 @@ export default class ModalDelete extends React.Component {
             labelPosition="left"
             basic
           >
-            <Icon name="times" color="green" />
+            <Icon name="times" color="teal" />
             {this.props.buttonName}
           </Button>
         }
       >
         <Modal.Header>
-          <i className="building green icon"></i> Delete Entreprises
+          <i className="building teal icon"></i> Delete Entreprises
         </Modal.Header>
         <Modal.Content image>
           <Modal.Description>{this.getDeletePhase()}</Modal.Description>

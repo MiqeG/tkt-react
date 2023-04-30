@@ -36,6 +36,13 @@ export default class MenuExampleContentProp extends Component {
             content="Contact"
             onClick={this.handleItemClick}
           />
+          <Menu.Item
+            icon="sign-out"
+            name="logout"
+            active={activeItem === "logout"}
+            content="Logout"
+            onClick={this.handleItemClick}
+          />
         </Menu>
       </div>
     );

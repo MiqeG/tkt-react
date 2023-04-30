@@ -4,7 +4,7 @@ const Contact = () => {
   return (
     <Segment>
       <h1>
-        <i className="envelope icon green"></i>Contact Me
+        <i className="envelope icon teal"></i>Contact Me
       </h1>
       <Divider></Divider>
     </Segment>

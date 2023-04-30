@@ -1,9 +1,8 @@
 import React from "react";
 import { Form, Loader, Dimmer, Button, Modal, Icon } from "semantic-ui-react";
 import MessageSuccessError from "./MessageSuccessError";
-import app_env from "../AppEnv";
 import SectorDropDown from "./SectorDropDown";
-
+import { backendCall } from "../callFetch";
 const nameRegex = /.*[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF0-9-_]$/g;
 export default class UpdateForm extends React.Component {
   constructor(props) {
@@ -164,20 +163,10 @@ export default class UpdateForm extends React.Component {
   };
   sendData = async (data) => {
     this.setState({ loading: true });
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    };
+
     try {
-      const response = await fetch(
-        app_env.url.API_URL + "/upd_entreprise",
-        requestOptions
-      );
-      if (response.status > 301 || response.status < 200)
-        throw new Error(
-          "Unable to update entreprise status : " + response.status
-        );
+      await backendCall("/upd_entreprise", data);
+
       this.setState({
         message: {
           title: "Success !",
@@ -326,7 +315,7 @@ export default class UpdateForm extends React.Component {
               labelPosition="left"
               basic
               icon="thumbs up"
-              color="green"
+              color="teal"
               content="Done"
               disabled={!this.state.confirmed}
               onClick={() => this.confirmedDelete()}

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Dropdown } from "semantic-ui-react";
-import app_env from "../AppEnv";
-
+import { backendCall } from "../callFetch";
 const storage_name = "sector-options-dropdown";
 class SectorDropDown extends Component {
   state = {
@@ -22,9 +21,8 @@ class SectorDropDown extends Component {
     const sectors = {};
     try {
       const response = await this.getOptions();
-      const parsed = await response.json();
 
-      parsed.Items.forEach((item) => {
+      response.Items.forEach((item) => {
         if (!sectors[item.sector]) {
           sectors[item.sector] = true;
           options.unshift({
@@ -54,18 +52,8 @@ class SectorDropDown extends Component {
   };
   getOptions = () => {
     return new Promise(async (resolve, reject) => {
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({}),
-      };
       try {
-        const response = await fetch(
-          app_env.url.API_URL + "/scan_options",
-          requestOptions
-        );
-        if (response.status > 301 || response.status < 200)
-          throw new Error("Unable to get items status " + response.status);
+        const response = await backendCall("/scan_options", {});
         return resolve(response);
       } catch (error) {
         return reject(error);

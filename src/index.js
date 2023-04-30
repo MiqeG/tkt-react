@@ -6,11 +6,9 @@ import Home from "./pages/Home";
 import Layout from "./pages/Layout";
 import Contact from "./pages/Contact";
 import Blogs from "./pages/TheBlogs.js";
+import Login from "./pages/Login.js";
+import Logout from "./pages/Logout";
 import "semantic-ui-css/semantic.min.css";
-import "./dt.css";
-import "datatables.net-se";
-import "datatables.net-dt/js/dataTables.dataTables";
-import "datatables.net-dt/css/jquery.dataTables.min.css";
 import "./App.css";
 export default function App() {
   return (
@@ -21,6 +19,8 @@ export default function App() {
           <Route path="blogs" element={<Blogs />} />
           <Route path="contact" element={<Contact />} />
         </Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/logout" element={<Logout />}></Route>
       </Routes>
     </BrowserRouter>
   );

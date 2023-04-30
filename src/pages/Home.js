@@ -4,7 +4,7 @@ const Home = () => {
   return (
     <Segment>
       <h1>
-        <i className="home icon green"></i>Home
+        <i className="home icon teal"></i>Home
       </h1>
       <Divider></Divider>
       <AwsTable></AwsTable>

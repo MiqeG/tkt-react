@@ -1,8 +1,8 @@
 import React from "react";
 import { Form, Loader, Dimmer } from "semantic-ui-react";
 import MessageSuccessError from "./MessageSuccessError";
-import app_env from "../AppEnv";
 import SectorDropDown from "./SectorDropDown";
+import { backendCall } from "../callFetch";
 const model = {
   name: "",
   sector: "",
@@ -109,18 +109,10 @@ export default class AddForm extends React.Component {
   };
   sendData = async (data) => {
     this.setState({ loading: true });
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    };
+
     try {
-      const response = await fetch(
-        app_env.url.API_URL + "/put_entreprise",
-        requestOptions
-      );
-      if (response.status > 301 || response.status < 200)
-        throw new Error("Unable to put entreprise status : " + response.status);
+      await backendCall("/put_entreprise", data);
+
       this.setState({
         message: {
           title: "Success !",

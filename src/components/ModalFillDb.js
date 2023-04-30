@@ -115,7 +115,7 @@ export default class MofalOfFill extends React.Component {
           disabled={this.state.percent === 100 ? true : false}
           onClick={() => this.fillAll()}
         >
-          <i className="building icon green"></i> Fill
+          <i className="building icon teal"></i> Fill
         </Button>
       );
     else if (type === "close")
@@ -196,13 +196,13 @@ export default class MofalOfFill extends React.Component {
         open={this.state.open}
         trigger={
           <Button className="mini marginer" icon labelPosition="left" basic>
-            <Icon name="building" color="green" />
+            <Icon name="building" color="teal" />
             {this.props.buttonName}
           </Button>
         }
       >
         <Modal.Header>
-          <i className="building green icon"></i> Fill Entreprises
+          <i className="building teal icon"></i> Fill Entreprises
         </Modal.Header>
         <Modal.Content image>
           <Modal.Description>{this.getFillPhase()}</Modal.Description>

@@ -68,7 +68,7 @@ class DataTableComp extends Component {
     return (
       <div>
         <table
-          className="ui green table"
+          className="ui teal table"
           id="dataTable"
           width="100%"
           cellSpacing="0"

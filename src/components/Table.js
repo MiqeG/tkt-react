@@ -120,7 +120,7 @@ class Table extends Component {
                 labelPosition="left"
                 onClick={this.reloadTable}
               >
-                <Icon name="refresh" color="green" />
+                <Icon name="refresh" color="teal" />
                 Refresh
               </Button>
             </Form.Field>

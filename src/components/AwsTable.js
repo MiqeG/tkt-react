@@ -9,12 +9,11 @@ import {
   Form,
   Dropdown,
   Input,
-  Label,
 } from "semantic-ui-react";
 import MessageSuccessError from "./MessageSuccessError";
-import app_env from "../AppEnv";
-import SectorDropDown from "./SectorDropDown";
 
+import SectorDropDown from "./SectorDropDown";
+import { backendCall } from "../callFetch";
 const limitOptions = [
   {
     key: "500",
@@ -91,21 +90,9 @@ class Table extends Component {
       Items: items,
     };
     return new Promise(async (resolve, reject) => {
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      };
       try {
-        const response = await fetch(
-          app_env.url.API_URL + "/batch_write",
-          requestOptions
-        );
-        if (response.status > 301 || response.status < 200)
-          throw new Error(
-            "Unable to batch Write data status : " + response.status
-          );
-        return resolve();
+        const response = await backendCall("/batch_write", body);
+        return resolve(response);
       } catch (error) {
         return reject(error);
       }
@@ -158,21 +145,9 @@ class Table extends Component {
   };
   deleteData(item) {
     return new Promise(async (resolve, reject) => {
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(item),
-      };
       try {
-        const response = await fetch(
-          app_env.url.API_URL + "/delete_entreprise",
-          requestOptions
-        );
-        if (response.status > 301 || response.status < 200)
-          throw new Error(
-            "Unable to delete entreprise status : " + response.status
-          );
-        return resolve();
+        const response = await backendCall("/delete_entreprise", item);
+        return resolve(response);
       } catch (error) {
         console.error(error);
         return reject(error);
@@ -235,24 +210,14 @@ class Table extends Component {
   };
   getData = async () => {
     this.setState({ loading: true });
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+
+    try {
+      const data = await backendCall("/scan_entreprises", {
         ...this.getFilters(),
         Limit: this.state.Limit,
         ExclusiveStartKey: this.state.ExclusiveStartKey,
-      }),
-    };
-    try {
-      const response = await fetch(
-        app_env.url.API_URL + "/scan_entreprises",
-        requestOptions
-      );
-      const data = await response.json();
-      if (response.status > 301 || response.status < 200)
-        throw new Error("Unable to get data status :" + response.status);
-
+      });
+     
       this.setState({ data: [...this.state.data, ...data.Items] }, () => {
         if (Object.keys(this.state.sorters)[0])
           this.sortByName(Object.keys(this.state.sorters)[0], true);
@@ -412,7 +377,7 @@ class Table extends Component {
                 labelPosition="left"
                 onClick={() => this.search()}
               >
-                <Icon name="search" color="green" />
+                <Icon name="search" color="teal" />
                 Search
               </Button>
             </Form.Field>
@@ -424,7 +389,7 @@ class Table extends Component {
                 labelPosition="left"
                 onClick={() => this.resetFilters()}
               >
-                <Icon name="refresh" color="green" />
+                <Icon name="refresh" color="teal" />
                 Reset Filters
               </Button>
             </Form.Field>
@@ -452,7 +417,7 @@ class Table extends Component {
               disabled={!this.state.ExclusiveStartKey}
               onClick={this.getData}
             >
-              <Icon name="cloud download" color="green" />
+              <Icon name="cloud download" color="teal" />
               More data
             </Button>
           </Segment>
