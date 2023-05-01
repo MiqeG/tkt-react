@@ -16,7 +16,7 @@ import Cookies from "js-cookie";
 import app_env from "../AppEnv";
 import QRCode from "qrcode";
 import ForgotPasswordModal from "./ForgotPasswordModal";
-
+import setCookies from "../saveCookies";
 class LoginForm extends React.Component {
   state = {
     email: "",
@@ -60,17 +60,7 @@ class LoginForm extends React.Component {
       const response = await this.call(body, name);
 
       if (response.AuthenticationResult) {
-        Cookies.set("access-token", response.AuthenticationResult.AccessToken, {
-          secure: true,
-        });
-        Cookies.set(
-          "refresh-token",
-          response.AuthenticationResult.RefreshToken,
-          { secure: true }
-        );
-        Cookies.set("id-token", response.AuthenticationResult.IdToken, {
-          secure: true,
-        });
+        console.log("COOKIES SAVED VERIFY : ", setCookies(response));
         return (window.location.href = "/");
       } else {
         if (response.ChallengeName === "MFA_SETUP") {

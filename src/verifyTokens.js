@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
 import { backendCall } from "./callFetch";
+import setCookies from "./saveCookies";
 export const verifyToken = () => {
   const body = {
     accessToken: Cookies.get("access-token"),
@@ -10,11 +11,13 @@ export const verifyToken = () => {
     if (!body.accessToken || !body.idToken) return reject("No tokens");
 
     try {
-      await backendCall("/access_token");
+      const response = await backendCall("/access_token");
+      if (response.AuthenticationResult) {
+        console.log("COOKIES SAVED VERIFY : ", setCookies(response));
+      }
       return resolve();
     } catch (error) {
       console.error(error);
-
     }
   });
 };
@@ -24,12 +27,7 @@ export const refreshToken = () => {
       const response = await backendCall("/login/refresh_token");
 
       if (response.AuthenticationResult) {
-        Cookies.set("access-token", response.AuthenticationResult.AccessToken, {
-          secure: true,
-        });
-        Cookies.set("id-token", response.AuthenticationResult.IdToken, {
-          secure: true,
-        });
+        console.log("COOKIES SAVED VERIFY : ", setCookies(response));
       }
       return resolve();
     } catch (error) {
