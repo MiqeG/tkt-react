@@ -13,7 +13,7 @@ export const verifyToken = () => {
     try {
       const response = await backendCall("/access_token");
       if (response.AuthenticationResult) {
-        console.log("COOKIES SAVED VERIFY : ", setCookies(response));
+        setCookies(response);
       }
       return resolve();
     } catch (error) {
@@ -27,7 +27,7 @@ export const refreshToken = () => {
       const response = await backendCall("/login/refresh_token");
 
       if (response.AuthenticationResult) {
-        console.log("COOKIES SAVED VERIFY : ", setCookies(response));
+        setCookies(response);
       }
       return resolve();
     } catch (error) {

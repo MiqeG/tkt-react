@@ -25,7 +25,7 @@ export const backendCall = (path, data, refreshed, retry) => {
       if (contentType && contentType.indexOf("application/json") !== -1) {
         rsp = await response.json();
         if (rsp.AuthenticationResult && !refreshed) {
-          console.log("COOKIES SAVED : ", setCookies(rsp));
+          setCookies(rsp);
           return resolve(await backendCall(path, data, true));
         }
       } else {

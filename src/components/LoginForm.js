@@ -12,7 +12,6 @@ import {
 import MessageSuccessError from "./MessageSuccessError";
 import logo from "../logo.svg";
 import React from "react";
-import Cookies from "js-cookie";
 import app_env from "../AppEnv";
 import QRCode from "qrcode";
 import ForgotPasswordModal from "./ForgotPasswordModal";
@@ -60,7 +59,7 @@ class LoginForm extends React.Component {
       const response = await this.call(body, name);
 
       if (response.AuthenticationResult) {
-        console.log("COOKIES SAVED VERIFY : ", setCookies(response));
+        setCookies(response);
         return (window.location.href = "/");
       } else {
         if (response.ChallengeName === "MFA_SETUP") {

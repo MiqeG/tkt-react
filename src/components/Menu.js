@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Menu } from "semantic-ui-react";
+import { Menu, Icon } from "semantic-ui-react";
 
 export default class MenuExampleContentProp extends Component {
   state = {};
@@ -16,28 +16,28 @@ export default class MenuExampleContentProp extends Component {
       <div className="topper">
         <Menu fixed="top">
           <Menu.Item
-            icon="home"
+            icon={<Icon name="home" color="teal"></Icon>}
             name=""
             active={activeItem === ""}
             content="Home"
             onClick={this.handleItemClick}
           />
           <Menu.Item
-            icon="users"
-            name="blogs"
-            active={activeItem === "blogs"}
-            content="Blogs"
-            onClick={this.handleItemClick}
-          />
-          <Menu.Item
-            icon="envelope"
+            icon={<Icon name="envelope" color="teal"></Icon>}
             name="contact"
             active={activeItem === "contact"}
             content="Contact"
             onClick={this.handleItemClick}
           />
           <Menu.Item
-            icon="sign-out"
+            icon={<Icon name="cog" color="teal"></Icon>}
+            name="parameters"
+            active={activeItem === "parameters"}
+            content="Parameters"
+            onClick={this.handleItemClick}
+          />
+          <Menu.Item
+            icon={<Icon name="sign-out" color="teal"></Icon>}
             name="logout"
             active={activeItem === "logout"}
             content="Logout"
