@@ -11,7 +11,9 @@ class Login extends React.Component {
       await verifyToken();
       return (window.location.href = "/");
     } catch (error) {
-      this.setState({ not_logged: true });
+      setTimeout(() => {
+        this.setState({ not_logged: true });
+      }, 100);
     }
   };
   componentDidMount() {
