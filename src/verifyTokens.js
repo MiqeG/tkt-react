@@ -5,6 +5,7 @@ export const verifyToken = () => {
     accessToken: Cookies.get("access-token"),
     idToken: Cookies.get("id-token"),
   };
+
   return new Promise(async (resolve, reject) => {
     if (!body.accessToken || !body.idToken) return reject("No tokens");
 
@@ -13,7 +14,7 @@ export const verifyToken = () => {
       return resolve();
     } catch (error) {
       console.error(error);
-      await refreshToken();
+
     }
   });
 };
