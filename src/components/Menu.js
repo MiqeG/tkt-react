@@ -23,17 +23,10 @@ export default class MenuExampleContentProp extends Component {
             onClick={this.handleItemClick}
           />
           <Menu.Item
-            icon={<Icon name="envelope" color="teal"></Icon>}
-            name="contact"
-            active={activeItem === "contact"}
-            content="Contact"
-            onClick={this.handleItemClick}
-          />
-          <Menu.Item
             icon={<Icon name="cog" color="teal"></Icon>}
             name="parameters"
             active={activeItem === "parameters"}
-            content="Parameters"
+            content="Settings"
             onClick={this.handleItemClick}
           />
           <Menu.Item

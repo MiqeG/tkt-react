@@ -4,7 +4,7 @@ const Parameters = () => {
   return (
     <Segment className="container">
       <h1>
-        <i className="cog icon teal"></i> Parameters
+        <i className="cog icon teal"></i> Settings
       </h1>
       <Divider></Divider>
       <PasswordForm></PasswordForm>

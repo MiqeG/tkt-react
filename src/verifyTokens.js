@@ -12,9 +12,7 @@ export const verifyToken = () => {
 
     try {
       const response = await backendCall("/access_token");
-      if (response.AuthenticationResult) {
-        setCookies(response);
-      }
+      setCookies(response);
       return resolve();
     } catch (error) {
       console.error(error);
@@ -25,10 +23,7 @@ export const refreshToken = () => {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await backendCall("/login/refresh_token");
-
-      if (response.AuthenticationResult) {
-        setCookies(response);
-      }
+      setCookies(response);
       return resolve();
     } catch (error) {
       return reject(error);

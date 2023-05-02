@@ -244,7 +244,7 @@ class Table extends Component {
     }
     return this.setState({ loading: false });
   };
-  componentDidMount() {}
+
   search = () => {
     if (
       !this.state.siren &&

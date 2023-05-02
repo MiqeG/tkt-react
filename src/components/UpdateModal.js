@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { Button, Modal } from "semantic-ui-react";
 import UpdateForm from "./UpdateForm";
-function ModalExampleModal(props) {
+function UpdateModal(props) {
   const [open, setOpen] = React.useState(true);
   const [deletedEntreprise, setDeletedEntreprise] = React.useState(false);
   const childRef = useRef();
@@ -78,4 +78,4 @@ function ModalExampleModal(props) {
     </Modal>
   );
 }
-export default ModalExampleModal;
+export default UpdateModal;

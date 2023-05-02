@@ -37,8 +37,9 @@ class MyTable extends React.Component {
     const toggle = !this.state.set;
     const newMap = {};
     this.props.data.forEach((element) => {
-      if (toggle === false) delete newMap[element.siren + "_" + element.year];
-      else newMap[element.siren + "_" + element.year] = toggle;
+      const id = element.siren + "_" + element.year;
+      if (toggle === false) delete newMap[id];
+      else newMap[id] = toggle;
     });
     return this.setState({ set: toggle, checkMap: newMap });
   };
@@ -104,7 +105,7 @@ class MyTable extends React.Component {
       );
     }
   };
-  componentDidUpdate() {}
+
   render() {
     return (
       <div>
@@ -179,7 +180,6 @@ class MyTable extends React.Component {
 }
 
 class ObjectRow extends React.Component {
-  componentDidMount() {}
   handleEvents = (e, obj) => {
     this.props.setCheckedUnchecked(
       this.props.obj.siren + "_" + this.props.obj.year
